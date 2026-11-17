@@ -2,112 +2,180 @@
   'use strict';
 
   /* ------------------------------------------------------------------
-     MAHSULOTLAR — shu ro‘yxatni tahrirlang. Yangi atir qo‘shish uchun
-     bitta obyekt qo‘shish kifoya. tint — shisha ichidagi suyuqlik rangi.
-     long / sillage — 1 dan 5 gacha.
+     MAHSULOTLAR — shu ro‘yxatni tahrirlang. art: diffuser | jar | spray |
+     pump | box. tint — idish ichidagi rang.
   ------------------------------------------------------------------ */
   const PRODUCTS = [
     {
-      name: 'Nur', family: 'Sitrus · Gulli', tint: '#f1dfa4',
-      line: 'Tong yorug‘idek tiniq va yengil.',
-      desc: 'Bergamotning yorqin ochilishi asta-sekin oq gullarga o‘tadi. Toza ko‘ylak va erta tong havosini eslatadigan kundalik ifor.',
-      top: 'Bergamot, limon po‘sti', heart: 'Neroli, yasmin', base: 'Oq mushk, kedr',
-      when: 'Kunduzi · bahor, yoz', long: 3, sillage: 2
+      name: 'Diffuzor', tag: 'Uy uchun', art: 'diffuser', tint: '#8f1d2c',
+      line: 'Tayoqchali aromadiffuzor — uy va ofis uchun.',
+      desc: 'Xonani selektiv parfyumeriyadan ilhomlangan ifor bilan to‘ldiradi. Sodda dizayn, uzoq saqlanadigan ifor.',
+      points: 'Uy, ofis va istalgan xona uchun',
+      size: '50 ml · 100 ml',
+      scents: 'Lost Cherry, Baccarat Rouge 540, Molecule 020, Devil’s Intrigue, La Sultane, Blackberry & Bay, Black Pepper, Bitter Peach, Santal 33, Tobacco Vanille, Black Vanilla, Moss'
     },
     {
-      name: 'Ipak', family: 'Gulli · Pudrali', tint: '#f0cfc8',
-      line: 'Teriga yaqin, yumshoq va nafis.',
-      desc: 'Iris va pion atrofida qurilgan mayin kompozitsiya. Baland ovozda gapirmaydi, yaqin kelganlargina sezadi.',
-      top: 'Nok, pushti murch', heart: 'Iris, pion', base: 'Kashmir yog‘ochi, mushk',
-      when: 'Har kuni · barcha fasllar', long: 3, sillage: 2
+      name: 'Tana va qo‘l kremi', tag: 'Tana', art: 'pump', tint: '#efe6da',
+      line: 'Parfyumlangan krem — namlaydi va iz qoldiradi.',
+      desc: 'Shi yog‘i, shirin bodom yog‘i va kokos suti asosidagi yengil losyon. Terini yumshoq va baxmaldek qiladi.',
+      points: 'Tez singadi, tana va kiyimda iz qoldirmaydi',
+      size: '250 ml',
+      scents: 'Lost Cherry, La Sultane, Blanche, Black Pepper & Amber Neroli, Blackberry & Bay, Devil’s Intrigue, Lime Basil & Mandarin'
     },
     {
-      name: 'Sahro', family: 'Sharqona · Yog‘ochli', tint: '#d9a04e',
-      line: 'Issiq qum, za’faron va ud.',
-      desc: 'Za’faron va kardamonning ziravor issig‘i ud va atirgul bilan uchrashadi. Chuqur, boy va uzoq saqlanadigan iz qoldiradi.',
-      top: 'Za’faron, kardamon', heart: 'Ud, atirgul', base: 'Anbar, sandal',
-      when: 'Kechqurun · kuz, qish', long: 5, sillage: 4
+      name: 'Krem-batter', tag: 'Tana', art: 'jar', tint: '#f3ead6',
+      line: 'Sufledek zich, to‘yimli tekstura.',
+      desc: 'Qattiq tabiiy yog‘lar asosidagi zich krem. Terini chuqur namlaydi va oziqlantiradi, quruq teri uchun ayniqsa mos.',
+      points: 'Chuqur namlash va oziqlantirish',
+      size: 'Tana uchun katta idish · qo‘l uchun 30 ml',
+      scents: 'Lost Cherry, La Sultane, Blackberry & Bay'
     },
     {
-      name: 'Tun', family: 'Yog‘ochli · Charm', tint: '#5d5450',
-      line: 'Qorong‘i, sirli va o‘ziga ishongan.',
-      desc: 'Qora murch va olxo‘ri bilan boshlanib, tutatqi va charmga aylanadi. Kechki chiqishlar uchun yaratilgan xarakterli ifor.',
-      top: 'Qora murch, olxo‘ri', heart: 'Tutatqi, charm', base: 'Pachuli, vanil',
-      when: 'Kechqurun · kuz, qish', long: 5, sillage: 4
+      name: 'Soch spreyi 30 in 1', tag: 'Soch', art: 'spray', tint: '#e9d9c4',
+      line: 'Termohimoya, yaltirash va ifor.',
+      desc: 'Tarkibidagi keratin sochni himoya qiladi va har foydalanishdan keyin tabiiy yaltirashni saqlaydi. Sochga parfyumdek ifor beradi.',
+      points: 'Fen va dazmoldan termohimoya · ultrabinafsha nurlardan himoya · yaltirash',
+      size: 'Sprey flakon',
+      scents: 'Black Pepper, Devil’s Intrigue, La Sultane'
     },
     {
-      name: 'Bahor', family: 'Yashil · Yangi', tint: '#cfdcae',
-      line: 'Yomg‘irdan keyingi bog‘.',
-      desc: 'Yashil choy va yalpizning salqini marvaridgul va anjir bargi bilan davom etadi. Yengil nafas olgandek his beradi.',
-      top: 'Yashil choy, yalpiz', heart: 'Marvaridgul, anjir bargi', base: 'Vetiver, oq mox',
-      when: 'Kunduzi · bahor, yoz', long: 2, sillage: 2
+      name: 'Soch niqobi', tag: 'Soch', art: 'jar', tint: '#d9c2c2',
+      line: 'Shampun va konditsionerdan chuqurroq ta’sir.',
+      desc: 'Soch tolasiga chuqur kirib, shikastlangan sochni tiklaydi, namlaydi va oziqlantiradi. Bo‘yalgan soch rangini saqlashga yordam beradi.',
+      points: 'Tiklash · namlash · rangni saqlash',
+      size: 'Banka',
+      scents: 'Lost Cherry, Blanche'
     },
     {
-      name: 'Anor', family: 'Mevali · Sharqona', tint: '#b8475a',
-      line: 'Shirali, yorqin va esda qoladigan.',
-      desc: 'Pishgan anor va qora smorodinaning nordon-shirin ochilishi atirgul orqali iliq tonka va anbarga tushadi.',
-      top: 'Anor, qora smorodina', heart: 'Atirgul, osmantus', base: 'Tonka, anbar',
-      when: 'Kunduzi va kechqurun · kuz', long: 4, sillage: 3
+      name: 'Soch kremi', tag: 'Soch', art: 'pump', tint: '#f1ede6',
+      line: 'Yuvilmaydigan silliqlovchi krem.',
+      desc: 'Sochni bir zumda silliq va yaltiroq qiladi, shikastlangan uchlarni tiklaydi. Quyosh, tuzli va xlorli suvdan himoya qiladi.',
+      points: 'Yuvib tashlanmaydi · silliqlik va yaltirash',
+      size: 'Flakon',
+      scents: 'Parfyumlangan'
+    },
+    {
+      name: 'Suyuq sovun', tag: 'Tana', art: 'pump', tint: '#2b2b2b',
+      line: 'Parfyumlangan, terini quritmaydi.',
+      desc: 'Tabiiy tarkibli yumshoq sovun. Terini avaylab tozalaydi, keskin hidlarni ketkazadi va qo‘lda nafis ifor qoldiradi.',
+      points: 'Har kuni foydalanish uchun · terini quritmaydi',
+      size: 'Dozatorli flakon',
+      scents: 'Black Pepper va boshqalar'
+    },
+    {
+      name: 'Vanna tuzi', tag: 'Tana', art: 'jar', tint: '#f6f3ee',
+      line: 'Uydagi SPA marosimi.',
+      desc: 'Vannani ifor bilan to‘ldiradi, terini yumshatadi va charchoqni oladi. Kechki dam olish uchun.',
+      points: 'Terini yumshatadi · charchoqni oladi',
+      size: 'Banka',
+      scents: 'Blanche, Black Pepper'
+    },
+    {
+      name: 'Sovg‘a to‘plami', tag: 'Sovg‘a', art: 'box', tint: '#0a0a0a',
+      line: 'Bir nechta mahsulot bitta qutida.',
+      desc: 'Tayyor sovg‘a to‘plamlari bir necha xil tarkibda. Ichidagi mahsulotlar va iforni buyurtma paytida tanlash mumkin.',
+      points: 'Turli tarkib va hajmdagi to‘plamlar',
+      size: 'To‘plamga qarab',
+      scents: 'Tanlov bo‘yicha'
     }
   ];
-  const VOLUME = 'Eau de Parfum · 50 ml';
+
+  /* ------------------------------------------------------------------
+     IFORLAR — nomi, notalari va rang nuqtasi.
+  ------------------------------------------------------------------ */
+  const SCENTS = [
+    ['Lost Cherry', 'Pishgan gilos, bodom, sandal', '#8f1d2c'],
+    ['Baccarat Rouge 540', 'Za’faron va yasmin, iliq shirin akkordlar, yog‘ochli iz', '#d98a6a'],
+    ['Devil’s Intrigue', 'Osmantus, oq choy · apelsin guli, sandal · kashmeran, vanil', '#c9b8a3'],
+    ['Black Pepper', 'Qora murch · koriandr, kardamon · yog‘och, mushk, anbar', '#3a3532'],
+    ['La Sultane', 'Anbar, vanil, pachuli', '#b8863b'],
+    ['Blackberry & Bay', 'Maymunjon, kedr, vetiver', '#4b2a4f'],
+    ['Lime Basil & Mandarin', 'Laym, mandarin · rayhon · oq timyan, anbar', '#b9c96a'],
+    ['Blanche', 'Aldegidlar, atirgul · pion, apelsin guli · mushk, sandal. Tozalik hidi', '#f1efe9'],
+    ['Flora', 'Pion, nok, sitrus · osmantus, atirgul · sandal, pachuli', '#eab4c2'],
+    ['Molecule 02', 'Faqat terida ochiladi va har kimda har xil eshitiladi', '#dfe3e6'],
+    ['Bitter Peach', 'To‘yingan shaftoli notasi', '#f0a36b'],
+    ['African Leather', 'Charm, kardamon, geran · pachuli, vetiver', '#7a4a2a']
+  ];
 
   const $ = (s, r = document) => r.querySelector(s);
   const root = document.documentElement;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-  /* ---------- Shisha chizmasi ---------- */
-  const bottle = tint => `
-<svg class="bottle" viewBox="0 0 200 330" aria-hidden="true">
+  /* ---------- Idish chizmalari (viewBox 0 0 200 330) ---------- */
+  const label = (x, y, w, dark) => `
+  <rect x="${x}" y="${y}" width="${w}" height="${w * 0.6}" rx="2" fill="${dark ? '#0a0a0a' : '#fff'}" fill-opacity=".95"/>
+  <svg x="${x + w * 0.16}" y="${y + w * 0.15}" width="${w * 0.68}" height="${w * 0.305}" viewBox="0 0 710 318" fill="${dark ? '#fff' : '#0a0a0a'}"><use href="#logo"/></svg>`;
+  const glass = (x, y, w, hh, r, tint, pad = 10) => `
+  <rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="${r}" fill="#fff" fill-opacity=".55" stroke="#000" stroke-opacity=".12"/>
+  <rect x="${x + pad}" y="${y + pad * 2}" width="${w - pad * 2}" height="${hh - pad * 3}" rx="${Math.max(2, r - 7)}" fill="${tint}"/>
+  <rect x="${x + pad}" y="${y + pad * 2}" width="${w - pad * 2}" height="${hh - pad * 3}" rx="${Math.max(2, r - 7)}" fill="url(#g-liquid)"/>
+  <rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="${r}" fill="url(#g-glass)"/>
+  <rect x="${x + 15}" y="${y + 14}" width="5" height="${hh - 30}" rx="2.5" fill="#fff" fill-opacity=".45"/>`;
+  const ART = {
+    spray: t => `
   <rect x="68" y="6" width="64" height="66" rx="5" fill="url(#g-cap)"/>
   <rect x="84" y="72" width="32" height="14" fill="url(#g-neck)"/>
-  <rect x="26" y="86" width="148" height="236" rx="16" fill="#fff" fill-opacity=".55" stroke="#000" stroke-opacity=".12"/>
-  <rect x="36" y="112" width="128" height="196" rx="9" fill="${tint}"/>
-  <rect x="36" y="112" width="128" height="196" rx="9" fill="url(#g-liquid)"/>
-  <rect x="26" y="86" width="148" height="236" rx="16" fill="url(#g-glass)"/>
-  <rect x="42" y="100" width="5" height="206" rx="2.5" fill="#fff" fill-opacity=".5"/>
-  <rect x="56" y="176" width="88" height="58" rx="2" fill="#fff" fill-opacity=".94"/>
-  <svg x="70" y="188" width="60" height="27" viewBox="0 0 710 318" fill="#0a0a0a"><use href="#logo"/></svg>
-</svg>`;
+  ${glass(26, 86, 148, 236, 16, t)}${label(56, 176, 88)}`,
+    diffuser: t => `
+  <g stroke="#2a2420" stroke-width="3.2" stroke-linecap="round">
+    <path d="M97 150 62 14M100 150 88 6M100 150 112 6M103 150 138 14M99 150 74 30M101 150 126 30"/>
+  </g>
+  <rect x="80" y="140" width="40" height="22" rx="3" fill="url(#g-cap)"/>
+  ${glass(38, 160, 124, 162, 14, t)}${label(60, 214, 80)}`,
+    jar: t => `
+  <rect x="24" y="150" width="152" height="52" rx="8" fill="url(#g-cap)"/>
+  ${glass(30, 200, 140, 122, 16, t)}${label(62, 232, 76)}`,
+    pump: t => `
+  <rect x="58" y="34" width="62" height="13" rx="5" fill="url(#g-cap)"/>
+  <rect x="90" y="40" width="20" height="40" fill="url(#g-cap)"/>
+  <rect x="78" y="78" width="44" height="24" rx="4" fill="url(#g-cap)"/>
+  ${glass(42, 100, 116, 222, 18, t)}${label(62, 182, 76, t === '#2b2b2b' ? false : false)}`,
+    box: () => `
+  <rect x="24" y="118" width="152" height="46" rx="4" fill="url(#g-cap)"/>
+  <rect x="30" y="162" width="140" height="160" rx="4" fill="#0f0f0f"/>
+  <rect x="30" y="162" width="140" height="160" rx="4" fill="url(#g-glass)"/>
+  <rect x="92" y="118" width="16" height="204" fill="#8f1d2c"/>
+  <path d="M100 118c-14-30-44-26-36-6 5 12 24 8 36 6zm0 0c14-30 44-26 36-6-5 12-24 8-36 6z" fill="#8f1d2c"/>
+  ${label(62, 214, 76)}`
+  };
+  const art = (kind, tint) => `<svg class="bottle" viewBox="0 0 200 330" aria-hidden="true">${ART[kind](tint)}</svg>`;
 
-  /* ---------- Hero va kolleksiya ---------- */
-  $('#heroArt').innerHTML = bottle(PRODUCTS[2].tint);
+  /* ---------- Hero, mahsulotlar, iforlar ---------- */
+  $('#heroArt').innerHTML = art('diffuser', PRODUCTS[0].tint);
 
   const grid = $('#grid');
   grid.innerHTML = PRODUCTS.map((p, i) => `
 <button class="card reveal" type="button" data-i="${i}" style="--d:${(i % 3) * 0.08}s" aria-haspopup="dialog">
-  <span class="card-art">${bottle(p.tint)}</span>
+  <span class="card-art">${art(p.art, p.tint)}</span>
   <span class="card-body">
-    <span class="card-fam">${esc(p.family)}</span>
+    <span class="card-fam">${esc(p.tag)}</span>
     <span class="card-name">${esc(p.name)}</span>
     <span class="card-line">${esc(p.line)}</span>
     <span class="card-more">Batafsil <span aria-hidden="true">→</span></span>
   </span>
 </button>`).join('');
 
+  $('#scentList').innerHTML = SCENTS.map(([n, notes, t]) => `
+<li class="reveal"><i style="--t:${t}"></i><span class="scent-name">${esc(n)}</span><span class="scent-notes">${esc(notes)}</span></li>`).join('');
+
   /* ---------- Mahsulot oynasi ---------- */
   const sheet = $('#sheet');
-  const dots = n => `<span class="dots" role="img" aria-label="5 dan ${n}">${[1, 2, 3, 4, 5].map(k => `<i${k <= n ? ' class="f"' : ''}></i>`).join('')}</span>`;
 
   const openSheet = i => {
     const p = PRODUCTS[i];
     $('#sheetBody').innerHTML = `
-<div class="sheet-art">${bottle(p.tint)}</div>
+<div class="sheet-art">${art(p.art, p.tint)}</div>
 <div class="sheet-info">
-  <p class="eyebrow">${esc(p.family)}</p>
+  <p class="eyebrow">${esc(p.tag)}</p>
   <h2 id="sheetName">${esc(p.name)}</h2>
   <p class="sheet-desc">${esc(p.desc)}</p>
   <dl class="sheet-notes">
-    <div><dt>Yuqori</dt><dd>${esc(p.top)}</dd></div>
-    <div><dt>Yurak</dt><dd>${esc(p.heart)}</dd></div>
-    <div><dt>Asos</dt><dd>${esc(p.base)}</dd></div>
+    <div><dt>Xususiyat</dt><dd>${esc(p.points)}</dd></div>
+    <div><dt>Hajm</dt><dd>${esc(p.size)}</dd></div>
+    <div><dt>Iforlar</dt><dd>${esc(p.scents)}</dd></div>
   </dl>
-  <dl class="sheet-meta">
-    <div><dt>Davomiylik</dt><dd>${dots(p.long)}</dd></div>
-    <div><dt>Iz</dt><dd>${dots(p.sillage)}</dd></div>
-    <div><dt>Qachon</dt><dd>${esc(p.when)}</dd></div>
-    <div><dt>Hajm</dt><dd>${esc(VOLUME)}</dd></div>
-  </dl>
+  <p class="sheet-desc">Narx va mavjudligini <a href="https://www.instagram.com/jelair.brand/" target="_blank" rel="noopener">Instagram Direct</a> yoki <a href="https://t.me/JELAIDI" target="_blank" rel="noopener">Telegram</a> orqali so‘rang.</p>
 </div>`;
     sheet.showModal();
     $('#sheetBody').scrollTop = 0;
