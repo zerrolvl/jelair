@@ -103,14 +103,14 @@
      chiqadi; text — qisqa izoh. post — Telegram kanaldagi video raqami.
   ------------------------------------------------------------------ */
   const REVIEWS = [
-    { img: 'shahlo',   name: 'Shahlo Alijonova',  role: 'Bloger',            quote: 'Hidiga gap yo‘q', post: 1014 },
-    { img: 'ziyoda',   name: 'Ziyoda',            role: 'Xonanda',           text: 'Jelai parvarish to‘plamini videoda sinab ko‘rdi.', post: 446 },
-    { img: 'bonamur',  name: 'Bonamur',           role: 'Bloger',            text: 'Parfyumlangan soch spreylarini tanishtirdi.', post: 1487 },
-    { img: 'sherzod',  name: 'Sherzod Abdullaev', role: 'Kolorist-stilist',  text: 'Salonda mijoz sochini Jelai mahsulotlari bilan turmaklaydi.', post: 767 },
-    { img: 'parizoda', name: 'Parizoda Usmanova', role: 'Bloger',            text: 'Soch va tana parvarishi to‘plami haqida gapirib berdi.', post: 509 },
-    { img: 'durdona',  name: 'Durdona Kurbonova', role: 'Bloger',            text: 'Jelai sovg‘a to‘plamini ochib ko‘rsatdi.', post: 729 },
-    { img: 'zarina',   name: 'Zarina Yuldashova', role: 'Bloger',            text: 'Soch spreyini qanday ishlatishni ko‘rsatdi.', post: 691 },
-    { img: 'diana',    name: 'Diana Omarova',     role: 'Stilist-vizajist',  text: 'Parvarish mahsulotlarini videoda ko‘rib chiqdi.', post: 705 }
+    { img: 'shahlo',   name: 'Shahlo Alijonova',  role: 'Bloger',           quote: 'Hidiga gap yo‘q', text: 'Yozgi bog‘da, do‘stlari davrasida Jelai parfyumlangan tana kremi bilan.', post: 1014 },
+    { img: 'ziyoda',   name: 'Ziyoda',            role: 'Xonanda',          text: 'Jelai’ning tana va soch parvarishi to‘plamini ochib, krem-batter va moylarni birma-bir sinab ko‘rdi.', post: 446 },
+    { img: 'bonamur',  name: 'Bonamur',           role: 'Bloger',           text: 'Uzun sochlari uchun Jelai parfyumlangan «30 in 1» soch spreylarini birma-bir tanishtirdi.', post: 1487 },
+    { img: 'sherzod',  name: 'Sherzod Abdullaev', role: 'Kolorist-stilist', text: 'Salonda mijoz turmagini Jelai silliqlovchi soch kremi bilan yakunladi — natija videoda.', post: 767 },
+    { img: 'parizoda', name: 'Parizoda Usmanova', role: 'Bloger',           text: 'Soch va tana uchun Jelai to‘plamini ko‘rsatib, har bir mahsulotni qanday ishlatishini aytib berdi.', post: 509 },
+    { img: 'durdona',  name: 'Durdona Kurbonova', role: 'Bloger',           text: 'Uyda sochini yuvib, Jelai soch spreyi bilan salondagidek turmak qilishni ko‘rsatdi.', post: 729 },
+    { img: 'zarina',   name: 'Zarina Yuldashova', role: 'Bloger',           text: 'Jelai sovg‘a qutisini ochib, qo‘l kremi va uy diffuzorini sinab ko‘rdi.', post: 691 },
+    { img: 'diana',    name: 'Diana Omarova',     role: 'Stilist-vizajist', text: 'Kundalik parvarish to‘plami orasida Jelai krem va moylarini ko‘rib chiqdi.', post: 705 }
   ];
 
   /* ------------------------------------------------------------------
@@ -242,7 +242,8 @@
     <img src="img/sharh/${r.img}.jpg" alt="${esc(r.name)}" width="600" height="800" loading="lazy" decoding="async">
     <span class="rev-play"><i aria-hidden="true"></i>Video</span>
   </a>
-  <p class="rev-text${r.quote ? ' is-quote' : ''}">${r.quote ? `«${esc(r.quote)}»` : esc(r.text)}</p>
+  ${r.quote ? `<p class="rev-text is-quote">«${esc(r.quote)}»</p>` : ''}
+  <p class="rev-text">${esc(r.text)}</p>
   <p class="rev-who"><strong>${esc(r.name)}</strong><span>${esc(r.role)}</span></p>
 </article>`).join('');
   const revStep = dir => {
