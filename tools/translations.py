@@ -3,17 +3,17 @@
 # Qiymat — (ruscha, inglizcha). Yangi matn qo‘shsangiz, shu yerga ham qo‘shing va tools/build_i18n.py ni ishga tushiring.
 T = {
 # ---------- <head> ----------
-'Jelai® — parfyumlangan kosmetika va uy iforlari | Toshkent, O‘zbekiston':
-  ('Jelai® — парфюмированная косметика и ароматы для дома | Ташкент, Узбекистан',
-   'Jelai® — perfumed cosmetics and home fragrance | Tashkent, Uzbekistan'),
+'Jelai R — parfyumlangan kosmetika va uy iforlari | Toshkent, O‘zbekiston':
+  ('Jelai R — парфюмированная косметика и ароматы для дома | Ташкент, Узбекистан',
+   'Jelai R — perfumed cosmetics and home fragrance | Tashkent, Uzbekistan'),
 'Jelai (Jelai R) — Toshkentdagi parfyumlangan kosmetika brendi. Uy diffuzorlari, tana kremi, soch spreyi va niqoblari: Lost Cherry, Baccarat Rouge 540, Black Pepper iforlarida. Onlayn buyurtma, O‘zbekiston bo‘ylab yetkazib berish.':
   ('Jelai (Jelai R, Желай) — бренд парфюмированной косметики из Ташкента. Диффузоры для дома, крем для тела, спреи и маски для волос в ароматах Lost Cherry, Baccarat Rouge 540, Black Pepper. Онлайн-заказ, доставка по всему Узбекистану.',
    'Jelai (Jelai R) is a perfumed cosmetics brand from Tashkent. Reed diffusers, body cream, hair sprays and masks in Lost Cherry, Baccarat Rouge 540 and Black Pepper scents. Order online with delivery across Uzbekistan.'),
 'Jelai, Jelai R, Jelai uz, Jelai Toshkent, Jelai Uzbekistan, Желай, Jelai диффузор, parfyumlangan kosmetika, diffuzor, aromadiffuzor, soch spreyi, tana kremi, parfyum Toshkent, парфюмированная косметика Ташкент':
   ('Jelai, Желай, Jelai R, Jelai uz, Jelai Ташкент, Jelai Узбекистан, Jelai диффузор, парфюмированная косметика, диффузор для дома, аромадиффузор, спрей для волос, крем для тела, парфюмированная косметика Ташкент',
    'Jelai, Jelai R, Jelai uz, Jelai Tashkent, Jelai Uzbekistan, perfumed cosmetics, reed diffuser, home fragrance, hair perfume spray, body cream, perfumed cosmetics Tashkent'),
-'Jelai® — parfyumlangan kosmetika, Toshkent':
-  ('Jelai® — парфюмированная косметика, Ташкент', 'Jelai® — perfumed cosmetics, Tashkent'),
+'Jelai R — parfyumlangan kosmetika, Toshkent':
+  ('Jelai R — парфюмированная косметика, Ташкент', 'Jelai R — perfumed cosmetics, Tashkent'),
 'Istaklaringizdan qo‘rqmang. Uy diffuzorlari, tana va soch parvarishi selektiv parfyumeriya iforlarida. O‘zbekiston bo‘ylab yetkazib berish.':
   ('Не бойся своих желаний. Диффузоры для дома, уход за телом и волосами в ароматах селективной парфюмерии. Доставка по всему Узбекистану.',
    'Don’t fear your desires. Reed diffusers, body and hair care in niche perfume scents. Delivery across Uzbekistan.'),
@@ -38,9 +38,9 @@ T = {
 'Jelai — parfyumlangan kosmetika, Toshkent.': ('Jelai — парфюмированная косметика, Ташкент.', 'Jelai — perfumed cosmetics, Tashkent.'),
 'Istaklaringizdan': ('Не бойся', 'Don’t fear'),
 'qo‘rqmang': ('своих желаний', 'your desires'),
-'Jelai® — selektiv parfyumeriya iforlaridan ilhomlangan tana, soch va uy uchun mahsulotlar. O‘zbekiston bo‘ylab yetkazib beramiz.':
-  ('Jelai® — средства для тела, волос и дома, вдохновлённые ароматами селективной парфюмерии. Доставляем по всему Узбекистану.',
-   'Jelai® makes body, hair and home products inspired by niche perfumery. We deliver across Uzbekistan.'),
+'Jelai R — selektiv parfyumeriya iforlaridan ilhomlangan tana, soch va uy uchun mahsulotlar. O‘zbekiston bo‘ylab yetkazib beramiz.':
+  ('Jelai R — средства для тела, волос и дома, вдохновлённые ароматами селективной парфюмерии. Доставляем по всему Узбекистану.',
+   'Jelai R makes body, hair and home products inspired by niche perfumery. We deliver across Uzbekistan.'),
 'Mahsulotlarni ko‘rish': ('Смотреть продукцию', 'View products'),
 'Pastga': ('Вниз', 'Scroll down'),
 'Hamma sizdan qimmatbaho atir hidi kelyapti deb o‘ylaydi. Aslida bu shunchaki Jelai.':
@@ -319,7 +319,7 @@ T = {
 'Jelai (Jelai R, Желай) — Toshkentdagi parfyumlangan kosmetika brendi. Uy uchun aromadiffuzorlar, tana va qo‘l kremlari, krem-batter, soch spreyi, soch niqobi, suyuq sovun, vanna tuzi va sovg‘a to‘plamlari Lost Cherry, Baccarat Rouge 540, Devil’s Intrigue, Black Pepper, La Sultane kabi selektiv parfyumeriya iforlarida. Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali yetkazib beramiz.':
   ('Jelai (Желай, Jelai R) — бренд парфюмированной косметики из Ташкента. Аромадиффузоры для дома, кремы для тела и рук, крем-баттер, спрей и маска для волос, жидкое мыло, соль для ванны и подарочные наборы в ароматах селективной парфюмерии: Lost Cherry, Baccarat Rouge 540, Devil’s Intrigue, Black Pepper, La Sultane. Доставка по Ташкенту — Яндекс Доставка, в регионы — BTS.',
    'Jelai (Jelai R) is a perfumed cosmetics brand from Tashkent. Reed diffusers, body and hand creams, body butter, hair spray, hair mask, liquid soap, bath salt and gift sets in niche perfume scents such as Lost Cherry, Baccarat Rouge 540, Devil’s Intrigue, Black Pepper and La Sultane. Yandex Delivery within Tashkent and BTS to the regions.'),
-'Jelai®. Barcha huquqlar himoyalangan.': ('Jelai®. Все права защищены.', 'Jelai®. All rights reserved.'),
+'Jelai R. Barcha huquqlar himoyalangan.': ('Jelai R. Все права защищены.', 'Jelai R. All rights reserved.'),
 'Kursorni yurgizing — zarrachalar qochadi · bosing — sochiladi': ('Поводите курсором — частицы убегают · нажмите — разлетятся', 'Move your cursor and the particles run · click to scatter them'),
 'Logotipga teging — zarrachalar sochilib ketadi': ('Коснитесь логотипа — частицы разлетятся', 'Tap the logo to scatter the particles'),
 'Yuqoriga': ('Наверх', 'Back to top'),
