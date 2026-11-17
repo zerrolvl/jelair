@@ -149,7 +149,7 @@
   <rect x="84" y="72" width="32" height="14" fill="url(#g-neck)"/>
   ${glass(26, 86, 148, 236, 16, t)}${label(56, 176, 88)}`,
     diffuser: t => `
-  <g stroke="#2a2420" stroke-width="3.2" stroke-linecap="round">
+  <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
     <path d="M97 150 62 14M100 150 88 6M100 150 112 6M103 150 138 14M99 150 74 30M101 150 126 30"/>
   </g>
   <rect x="80" y="140" width="40" height="22" rx="3" fill="url(#g-cap)"/>
@@ -387,6 +387,17 @@
   })();
   document.querySelectorAll('.to-top').forEach(a => a.addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); }));
 
+  /* ---------- Kunduzgi / tungi rejim ---------- */
+  const darkMQ = matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : darkMQ.matches;
+  $('#themeBtn').addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
+    root.classList.add('theme-anim');
+    root.dataset.theme = next;
+    try { localStorage.setItem('jelai-theme', next); } catch (e) { /* ixtiyoriy */ }
+    setTimeout(() => root.classList.remove('theme-anim'), 500);
+  });
+
   /* ---------- Navigatsiya ---------- */
   const nav = $('#nav');
   const toggle = $('#navToggle');
@@ -516,7 +527,7 @@
         ex = Math.min(1, (now - leaving) / EXIT);
         const e = 1 - Math.pow(1 - ex, 3);
         loader.style.backgroundColor = `rgba(10,10,10,${1 - e})`;
-        const g = Math.round(245 - 235 * e);                // tuman oq sahifada qoramtir iz bo‘lib tarqaladi
+        const g = isDark() ? 242 : Math.round(245 - 235 * e);   // oq sahifada qoramtir iz, tungi rejimda yorug‘ bo‘lib tarqaladi
         ctx.fillStyle = `rgb(${g},${g},${g - 2})`;
         if (ex >= 1) { loader.remove(); return; }
       } else {

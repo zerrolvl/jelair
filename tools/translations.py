@@ -33,6 +33,7 @@ T = {
 'Savat': ('Корзина', 'Cart'),
 'Menyu': ('Меню', 'Menu'),
 'Til': ('Язык', 'Language'),
+'Kunduzgi yoki tungi rejim': ('Светлая или тёмная тема', 'Light or dark mode'),
 # ---------- Hero ----------
 'Jelai — parfyumlangan kosmetika, Toshkent.': ('Jelai — парфюмированная косметика, Ташкент.', 'Jelai — perfumed cosmetics, Tashkent.'),
 'Istaklaringizdan': ('Не бойся', 'Don’t fear'),
