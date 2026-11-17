@@ -345,8 +345,8 @@
     err.textContent = msg;
     if (msg) { (!name && cart.length ? $('#oName') : digits.length < 9 && cart.length ? $('#oPhone') : null)?.focus(); return; }
 
-    const city = $('#oCity').value, addr = $('#oAddr').value.trim(), note = $('#oNote').value.trim();
-    const ship = city === 'Toshkent shahri' ? 'Yandex Delivery' : city === 'Chet el' ? 'Xalqaro yetkazish' : 'BTS';
+    const city = $('#oCity').value, note = $('#oNote').value.trim();
+    const ship = city === 'Toshkent shahri' ? 'Yandex Delivery' : 'BTS';
     const text = [
       'Assalomu alaykum! Jelai saytidan buyurtma:',
       '',
@@ -354,9 +354,9 @@
       '',
       `Ism: ${name}`,
       `Telefon: ${phone}`,
-      `Hudud: ${city}${addr ? ', ' + addr : ''}`,
+      `Viloyat: ${city}`,
       `Yetkazish: ${ship}`,
-      note ? `Izoh: ${note}` : ''
+      note ? `Tavsif: ${note}` : ''
     ].filter((l, k, a) => l || a[k - 1]).join('\n').trim();
     outText.value = text;
     copyText(text).then(ok => { if (!ok) { outText.focus(); outText.select(); } });

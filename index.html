@@ -168,7 +168,7 @@
           </article>
           <article class="reveal">
             <h3>Yetkazib berish</h3>
-            <p>Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali. Chet elga ham jo‘natamiz.</p>
+            <p>Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali. O‘zbekiston bo‘ylab yetkazamiz.</p>
           </article>
         </div>
       </div>
@@ -186,8 +186,8 @@
         <div class="shop-side">
           <ol class="steps">
             <li class="reveal"><h3>Tanlang</h3><p>Mahsulotni oching, iforini tanlang va «Savatga qo‘shish»ni bosing.</p></li>
-            <li class="reveal"><h3>Yuboring</h3><p>Ism va telefoningizni yozing. Buyurtma matni tayyorlanadi va Telegram’da adminga yuboriladi.</p></li>
-            <li class="reveal"><h3>Qabul qiling</h3><p>Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali. Chet elga ham jo‘natamiz.</p></li>
+            <li class="reveal"><h3>Yuboring</h3><p>Ism, telefon va viloyatingizni yozing. Buyurtma matni tayyorlanadi va Telegram’da adminga yuboriladi.</p></li>
+            <li class="reveal"><h3>Qabul qiling</h3><p>Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali. O‘zbekiston bo‘ylab yetkazamiz.</p></li>
           </ol>
           <div class="alt-buy reveal">
             <p class="eyebrow">Yoki to‘g‘ridan-to‘g‘ri</p>
@@ -208,16 +208,15 @@
           <div class="fields">
             <label class="field"><span>Ismingiz</span><input id="oName" name="name" autocomplete="name" required></label>
             <label class="field"><span>Telefon</span><input id="oPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 __ ___ __ __" required></label>
-            <label class="field"><span>Hudud</span>
+            <label class="field field-wide"><span>Viloyat</span>
               <select id="oCity" name="city">
                 <option>Toshkent shahri</option><option>Toshkent viloyati</option><option>Andijon</option><option>Buxoro</option>
                 <option>Farg‘ona</option><option>Jizzax</option><option>Xorazm</option><option>Namangan</option><option>Navoiy</option>
                 <option>Qashqadaryo</option><option>Qoraqalpog‘iston</option><option>Samarqand</option><option>Sirdaryo</option>
-                <option>Surxondaryo</option><option>Chet el</option>
+                <option>Surxondaryo</option>
               </select>
             </label>
-            <label class="field"><span>Manzil</span><input id="oAddr" name="address" autocomplete="street-address" placeholder="Ko‘cha, uy, mo‘ljal"></label>
-            <label class="field field-wide"><span>Izoh</span><textarea id="oNote" name="note" rows="2" placeholder="Masalan: sovg‘a uchun qadoqlang"></textarea></label>
+            <label class="field field-wide"><span>Tavsif</span><textarea id="oNote" name="note" rows="3" placeholder="Buyurtma haqida qo‘shimcha: masalan, sovg‘a uchun qadoqlang"></textarea></label>
           </div>
           <p class="order-err" id="orderErr" role="alert"></p>
           <button class="btn btn-wide" type="submit">Buyurtmani yuborish <span aria-hidden="true">→</span></button>
