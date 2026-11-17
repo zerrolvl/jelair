@@ -506,46 +506,40 @@ html.locked { overflow: hidden; }
 .cq-row blockquote { margin: 0; font: italic 400 clamp(1.25rem, 2vw, 1.6rem)/1.3 var(--display); text-wrap: balance; }
 @media (max-width: 760px) { .cq-row { grid-template-columns: minmax(0, 1fr); } }
 
-/* ---------- Onlayn xarid ---------- */
+/* ---------- Buyurtma: kontaktlar ---------- */
 .shop { padding-block: clamp(80px, 11vw, 160px); background: var(--mist); }
-.shop-in { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
-.shop-side { display: grid; gap: clamp(32px, 4vw, 48px); min-width: 0; }
-.steps { display: grid; counter-reset: st; }
-.steps li { counter-increment: st; display: grid; grid-template-columns: 3.2rem minmax(0, 1fr); gap: 4px 12px; padding-block: 22px; border-top: 1px solid var(--line); }
-.steps li::before { content: counter(st, decimal-leading-zero); grid-row: span 2; font: 400 1.6rem/1 var(--display); }
-.steps h3 { font: 400 1.5rem/1.15 var(--display); }
-.steps p { color: var(--muted); font-size: .98rem; }
-.alt-buy { display: flex; flex-wrap: wrap; gap: 12px 26px; align-items: baseline; }
-.alt-buy .eyebrow { width: 100%; }
-.alt-buy a { font-weight: 400; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
-.order { display: grid; gap: 20px; background: var(--paper); border-radius: 28px; padding: clamp(22px, 3.4vw, 40px); min-width: 0; box-shadow: 0 30px 70px -40px rgba(0, 0, 0, .25); }
-.order-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.order-top h3 { font: 400 2rem/1 var(--display); }
-.order-count { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
-.cart { display: grid; }
-.cart-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 12px; align-items: center; padding-block: 14px; border-top: 1px solid var(--line); animation: hint-in .5s var(--ease); }
-.cart-row:last-child { border-bottom: 1px solid var(--line); }
-.cart-info { display: grid; gap: 2px; min-width: 0; }
-.cart-info strong { font-weight: 400; }
-.cart-info span { font-size: .88rem; color: var(--muted); overflow-wrap: anywhere; }
-.cart-del { width: 38px; height: 38px; border-radius: 50%; font-size: 1.4rem; color: var(--muted); transition: background .2s, color .2s; }
-.cart-del:hover { background: var(--mist); color: var(--ink); }
-.cart-empty { padding: 22px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); text-align: center; }
-.cart-empty a { color: var(--ink); border-bottom: 1px solid currentColor; }
-.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.field-wide { grid-column: 1 / -1; }
-@media (max-width: 520px) { .fields { grid-template-columns: minmax(0, 1fr); } }
-.order-err { color: #a3263a; font-size: .92rem; min-height: 0; }
-.order-err:empty { display: none; }
-.order-note { font-size: .85rem; color: var(--muted); text-align: center; }
-.order-done { display: grid; gap: 14px; padding: 22px; border-radius: 18px; background: var(--mist); animation: hint-in .6s var(--ease); }
-.order-done h3 { font: 400 1.6rem/1.1 var(--display); }
-.order-done p { color: var(--muted); font-size: .95rem; }
-.order-done textarea { font-size: .92rem; background: var(--paper); }
-.done-actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.done-actions .btn { padding: 13px 22px; }
-@media (max-width: 900px) { .shop-in { grid-template-columns: minmax(0, 1fr); } }
-@media (max-width: 420px) { .order { border-radius: 22px; } .cart-row { gap: 8px; } }
+.contact-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
+.cc {
+  position: relative; display: grid; gap: 6px; align-content: start; min-width: 0;
+  padding: clamp(24px, 2.6vw, 34px); border-radius: 24px; background: var(--paper);
+  transition: transform .6s var(--ease), box-shadow .6s var(--ease), background .3s;
+}
+a.cc:hover { transform: translateY(-4px); box-shadow: 0 28px 60px -34px rgba(0, 0, 0, .3); }
+.cc-ico { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 18px; box-shadow: inset 0 0 0 1px var(--line); }
+.cc-ico svg { width: 21px; height: 21px; fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.cc-ico .dot { fill: var(--ink); stroke: none; }
+.cc-label { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.cc-value { font: 400 clamp(1.45rem, 2.2vw, 1.9rem)/1.2 var(--display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.cc-note { color: var(--muted); font-size: .95rem; }
+.cc-go { position: absolute; top: clamp(24px, 2.6vw, 34px); right: clamp(24px, 2.6vw, 34px); font-size: 1.2rem; transition: transform .5s var(--ease); }
+a.cc:hover .cc-go { transform: translateX(5px); }
+.cc-main { background: var(--ink); color: var(--on-ink); }
+.cc-main .cc-label, .cc-main .cc-note { color: var(--on-ink-muted); }
+.cc-main .cc-ico { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); }
+.cc-main .cc-ico svg { stroke: var(--on-ink); }
+.cc-info { background: transparent; box-shadow: inset 0 0 0 1px var(--line); }
+.cc-info .cc-ico-2 { margin: 18px 0 18px; }
+.cc-info .cc-value { font-size: 1.3rem; }
+@media (max-width: 980px) { .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .contact-grid { grid-template-columns: minmax(0, 1fr); } .cc { border-radius: 20px; } }
+@media (hover: none) { a.cc:hover { transform: none; box-shadow: none; } }
+
+/* Mahsulot oynasi: aloqa tugmalari */
+.sheet-contact { display: grid; gap: 10px; padding-top: 6px; }
+.sheet-contact .btn { justify-content: center; }
+.sheet-contact-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.sheet-contact-row .btn { padding-inline: 12px; white-space: nowrap; }
+@media (max-width: 380px) { .sheet-contact-row { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Dillerlar ---------- */
 .dealers { padding-block: clamp(80px, 11vw, 160px); }

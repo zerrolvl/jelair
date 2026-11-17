@@ -248,6 +248,15 @@ T = {
 'Buyurtma matni nusxalandi': ('Текст заказа скопирован', 'Order text copied'),
 'Matnni belgilab, nusxalang': ('Выделите текст и скопируйте', 'Select the text and copy it'),
 'O‘chirish': ('Удалить', 'Remove'),
+# ---------- Buyurtma: kontaktlar ----------
+'Buyurtma uchun bog‘laning': ('Свяжитесь с нами для заказа', 'Contact us to order'),
+'Mahsulot va iforni tanlang, so‘ng bizga yozing yoki qo‘ng‘iroq qiling. Admin narx, mavjudlik va yetkazib berishni aytadi.':
+  ('Выберите продукт и аромат, затем напишите или позвоните нам. Администратор сообщит цену, наличие и условия доставки.', 'Pick a product and scent, then message or call us. Our admin will confirm the price, availability and delivery.'),
+'Buyurtma va savollar uchun': ('Для заказов и вопросов', 'For orders and questions'),
+'Direct’ga yozing': ('Напишите в Direct', 'Send us a DM'),
+'Yangi mahsulotlar va sharhlar': ('Новинки и отзывы', 'New arrivals and reviews'),
+'Telegram’da buyurtma berish': ('Заказать в Telegram', 'Order on Telegram'),
+'Assalomu alaykum! «{x}» haqida so‘ramoqchi edim.': ('Здравствуйте! Хочу узнать о товаре «{x}».', 'Hello! I’d like to ask about “{x}”.'),
 # ---------- Dillerlar ----------
 'Rasmiy hamkorlarimiz': ('Наши официальные партнёры', 'Our official partners'),
 'Jelai mahsulotlarini faqat rasmiy dillerlar va brendning o‘z sahifalaridan xarid qiling.':
