@@ -32,7 +32,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 h1, h2, h3, p, ol, ul { margin: 0; }
 ol, ul { padding: 0; list-style: none; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-[id] { scroll-margin-top: 72px; }
+[id] { scroll-margin-top: 88px; }
 
 .wrap {
   width: 100%;
@@ -61,7 +61,7 @@ h3 { font: 400 1.2rem/1.3 var(--body); letter-spacing: .01em; }
   display: grid; place-content: center; justify-items: center; gap: 34px;
   background: var(--ink);
 }
-.loader-logo { width: min(46vw, 250px); fill: var(--on-ink); overflow: visible; }
+.loader-logo { width: min(62vw, 340px); fill: var(--on-ink); overflow: visible; }
 .loader-logo .lg {
   opacity: 0; transform: translateY(14px); filter: blur(10px);
   animation: lg-in .9s var(--ease) forwards;
@@ -105,13 +105,13 @@ h3 { font: 400 1.2rem/1.3 var(--body); letter-spacing: .01em; }
 .nav.scrolled { border-color: var(--line); }
 .nav.open { border-color: transparent; }
 .nav-in {
-  max-width: 1240px; margin-inline: auto; height: 60px;
+  max-width: 1240px; margin-inline: auto; height: 76px;
   padding-left: max(var(--gutter), env(safe-area-inset-left, 0px));
   padding-right: max(var(--gutter), env(safe-area-inset-right, 0px));
   display: flex; align-items: center; justify-content: space-between;
 }
 .nav-logo { position: relative; z-index: 1; }
-.nav-logo svg { height: 28px; width: auto; fill: var(--ink); }
+.nav-logo svg { height: clamp(36px, 4.2vw, 44px); width: auto; fill: var(--ink); }
 .nav-links { display: flex; gap: clamp(20px, 3vw, 40px); }
 .nav-links a { font-size: 1rem; font-weight: 400; letter-spacing: .04em; position: relative; padding-block: 6px; }
 .nav-links a::after {
@@ -132,7 +132,7 @@ h3 { font: 400 1.2rem/1.3 var(--body); letter-spacing: .01em; }
     position: fixed; inset: 0; z-index: -1;
     flex-direction: column; justify-content: safe center; gap: clamp(2px, 1.2svh, 10px);
     height: 100vh; height: 100dvh; overflow-y: auto; overscroll-behavior: contain;
-    padding: calc(76px + env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) calc(36px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px));
+    padding: calc(92px + env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) calc(36px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px));
     background: var(--paper);
     opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s;
   }
@@ -153,7 +153,7 @@ h3 { font: 400 1.2rem/1.3 var(--body); letter-spacing: .01em; }
 .hero {
   position: relative; min-height: 100vh; min-height: 100svh;
   display: flex; align-items: center;
-  padding-block: 96px 72px;
+  padding-block: 112px 72px;
   background: radial-gradient(120% 80% at 75% 45%, var(--mist) 0%, var(--paper) 60%);
   overflow: hidden;
 }
@@ -196,7 +196,7 @@ h3 { font: 400 1.2rem/1.3 var(--body); letter-spacing: .01em; }
 .ready .hero-art { transition-delay: .15s; }
 
 @media (max-width: 760px) {
-  .hero { padding-block: 92px 84px; }
+  .hero { padding-block: 104px 84px; }
   h1 { font-size: clamp(1.9rem, 11.4vw, 5rem); }
   .hero-in { grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5svh, 44px); }
   .hero-art { order: -1; width: min(48vw, 200px, 24svh); }
@@ -375,7 +375,7 @@ html.locked { overflow: hidden; }
 
 /* Yotiq telefon: past ekranda hero siqiladi */
 @media (max-height: 520px) and (min-width: 761px) {
-  .hero { padding-block: 76px 40px; }
+  .hero { padding-block: 88px 40px; }
   .hero-text { gap: 16px; }
   .scroll-hint { display: none; }
 }
