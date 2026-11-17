@@ -15,13 +15,23 @@ with open(os.path.join(ROOT, 'i18n.js'), 'w', encoding='utf-8') as f:
     f.write('/* tools/build_i18n.py tomonidan yaratilgan — qo‘lda tahrirlamang */\nwindow.JELAI_I18N = ' + json.dumps(d, ensure_ascii=False) + ';\n')
 
 src = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
-ASSETS = ['styles.css', 'script.js', 'favicon.svg', 'icon-192.png', 'apple-touch-icon.png', 'site.webmanifest']
+ASSETS = ['styles.css', 'script.js', 'favicon.svg', 'favicon.ico', 'img/hero.webp', 'icon-192.png', 'apple-touch-icon.png', 'site.webmanifest']
 
 def tr_text(m, i, missing):
     lead, core, trail = m.group(1), m.group(2), m.group(3)
     if core in T: return '>' + lead + T[core][i] + trail + '<'
     if re.search(r'[A-Za-z]', core) and not core.startswith(('{', '@', '+', 'window.')): missing.add(core)
     return m.group(0)
+
+def faq_ld(h):
+    qa = re.findall(r'<summary><span>(.*?)</span>.*?</summary>\s*<div class="faq-a"><p>(.*?)</p>', h, re.S)
+    data = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in qa]}
+    return re.sub(r'<script type="application/ld\+json" id="faq-ld">.*?</script>',
+                  lambda m: '<script type="application/ld+json" id="faq-ld">' + json.dumps(data, ensure_ascii=False) + '</script>', h, flags=re.S)
+
+src = faq_ld(src)
+open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(src)
 
 for lang, (i, locale) in LANGS.items():
     h, missing = src, set()
@@ -47,7 +57,7 @@ for lang, (i, locale) in LANGS.items():
         parts[k] = re.sub(r'>(\s*)([^<>]*?[^\s<>])(\s*)<', lambda m: tr_text(m, i, missing), parts[k])
         parts[k] = re.sub(r'\b(aria-label|placeholder|alt|title|content)="([^"]*)"',
                           lambda m: f'{m.group(1)}="{T[m.group(2)][i]}"' if m.group(2) in T else m.group(0), parts[k])
-    h = ''.join(parts).replace('</a> .', '</a>.')
+    h = faq_ld(''.join(parts).replace('</a> .', '</a>.'))
     os.makedirs(os.path.join(ROOT, lang), exist_ok=True)
     open(os.path.join(ROOT, lang, 'index.html'), 'w', encoding='utf-8').write(h)
     print(lang, 'tayyor. Tarjimasi yo‘q matnlar:', sorted(missing) or 'yo‘q')

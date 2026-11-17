@@ -85,7 +85,7 @@
   const grid = $('#grid');
   grid.innerHTML = PRODUCTS.map((p, i) => `
 <button class="card reveal" type="button" data-i="${i}" style="--d:${(i % 3) * 0.08}s" aria-haspopup="dialog">
-  <span class="card-art"><img src="${BASE}img/products/${p.img}.jpg" alt="Jelai R — ${esc(p.name)}" width="640" height="800" loading="lazy" decoding="async"></span>
+  <span class="card-art"><img src="${BASE}img/products/${p.img}.webp" alt="Jelai R — ${esc(p.name)}" width="640" height="800" loading="lazy" decoding="async"></span>
   <span class="card-body">
     <span class="card-fam">${esc(p.tag)}</span>
     <span class="card-name">${esc(p.name)}</span>
@@ -96,7 +96,7 @@
 
   $('#scentList').innerHTML = SCENTS.map(([n, notes, c, img, about], k) => `
 <article class="ifor reveal" style="--d:${(k % 4) * 0.06}s; --t:${c}">
-  <div class="ifor-img"><img src="${BASE}img/ifor/${img}.jpg" alt="Jelai R «30 in 1» — ${esc(n)}" width="600" height="800" loading="lazy" decoding="async"></div>
+  <div class="ifor-img"><img src="${BASE}img/ifor/${img}.webp" alt="Jelai R «30 in 1» — ${esc(n)}" width="600" height="800" loading="lazy" decoding="async"></div>
   <h3 class="ifor-name"><i aria-hidden="true"></i>${esc(n)}</h3>
   <p class="ifor-notes">${esc(notes)}</p>
   <p class="ifor-about">${esc(about)}</p>
@@ -108,7 +108,7 @@
   const openSheet = i => {
     const p = PRODUCTS[i];
     $('#sheetBody').innerHTML = `
-<div class="sheet-art"><img src="${BASE}img/products/${p.img}.jpg" alt="Jelai R — ${esc(p.name)}" width="640" height="800"></div>
+<div class="sheet-art"><img src="${BASE}img/products/${p.img}.webp" alt="Jelai R — ${esc(p.name)}" width="640" height="800"></div>
 <div class="sheet-info">
   <p class="eyebrow">${esc(p.tag)}</p>
   <h2 id="sheetName">${esc(p.name)}</h2>
@@ -145,7 +145,7 @@
   track.innerHTML = REVIEWS.map((r, k) => `
 <article class="rev reveal" style="--d:${(k % 4) * 0.07}s">
   <a class="rev-img" href="https://t.me/jelaiuzz/${r.post}" target="_blank" rel="noopener" aria-label="${esc(r.name)} — ${t('videoni ko‘rish')}">
-    <img src="${BASE}img/sharh/${r.img}.jpg" alt="${esc(r.name)}" width="600" height="800" loading="lazy" decoding="async">
+    <img src="${BASE}img/sharh/${r.img}.webp" alt="${esc(r.name)}" width="600" height="800" loading="lazy" decoding="async">
     <span class="rev-play"><i aria-hidden="true"></i>${t('Video')}</span>
   </a>
   ${r.quote ? `<p class="rev-text is-quote">${t('«{x}»', esc(r.quote))}</p>` : ''}

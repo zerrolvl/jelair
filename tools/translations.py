@@ -312,7 +312,7 @@ T = {
 'Spirtsiz formula': ('Формула без спирта', 'Alcohol-free formula'),
 'Soch spreyi tarkibida spirt yo‘q — namoz o‘qiydigan ayollar uchun ham qulay.': ('В составе спрея для волос нет спирта — удобно и для женщин, совершающих намаз.', 'The hair spray contains no alcohol, so it also suits women who pray.'),
 'Soch spreyi va mistlar parvarish qiladi va ustiga qimmatbaho atirdek iz qoldiradi.': ('Спрей для волос и мисты ухаживают и оставляют шлейф, как от дорогих духов.', 'The hair spray and mists care for you and leave a trail like expensive perfume.'),
-'Jelai R — parfyumlangan soch spreyi, mist va uy parfyumi | Toshkent': ('Jelai R — парфюмированный спрей для волос, мист и парфюм для дома | Ташкент', 'Jelai R — perfumed hair spray, body mist and home perfume | Tashkent'),
+'Jelai R — parfyumlangan soch spreyi, mist va uy parfyumi | Toshkent': ('Jelai R (Желай) — парфюмированный спрей для волос, мист и парфюм для дома | Ташкент', 'Jelai R — perfumed hair spray, body mist and home perfume | Tashkent'),
 'Jelai R — Toshkentdagi parfyumlangan kosmetika brendi. «30 in 1» parfyumlangan soch krem-spreyi (termohimoya, ipak oqsillari, spirtsiz), tana uchun mistlar va uy parfyumi: Lost Cherry, Baccarat Rouge 540, Kirke, Black Opium iforlarida. O‘zbekiston bo‘ylab yetkazib berish.':
   ('Jelai R (Желай) — бренд парфюмированной косметики из Ташкента. Крем-спрей для волос «30 в 1» (термозащита, протеины шёлка, без спирта), мисты для тела и парфюм для дома в ароматах Lost Cherry, Baccarat Rouge 540, Kirke, Black Opium. Доставка по всему Узбекистану.',
    'Jelai R is a perfumed cosmetics brand from Tashkent. “30 in 1” hair cream spray (heat protection, silk proteins, alcohol-free), body mists and home perfume in Lost Cherry, Baccarat Rouge 540, Kirke and Black Opium scents. Delivery across Uzbekistan.'),
@@ -324,6 +324,30 @@ T = {
 'Jelai R (Jelai, Желай) — Toshkentdagi parfyumlangan kosmetika brendi, shiori — «Inspired by Perfume». «30 in 1» parfyumlangan soch krem-spreyi ipak oqsillari bilan sochni fen va dazmol issig‘idan himoya qiladi, yumshatadi va 12 soatgacha ifor qoldiradi; tarkibida spirt yo‘q. Shuningdek tana uchun mistlar va «Xlopok» uy parfyumi. Iforlar: Lost Cherry, Baccarat Rouge 540, Kirke, Black Opium, Chance Eau Tendre, Good Girl Gone Bad, Imagination, Sultan, Devil’s Intrigue. Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali yetkazib beramiz.':
   ('Jelai R (Желай) — бренд парфюмированной косметики из Ташкента, девиз — «Inspired by Perfume». Парфюмированный крем-спрей для волос «30 в 1» с протеинами шёлка защищает волосы от жара фена и утюжка, смягчает их и сохраняет аромат до 12 часов; в составе нет спирта. Также мисты для тела и парфюм для дома «Хлопок». Ароматы: Lost Cherry, Baccarat Rouge 540, Kirke, Black Opium, Chance Eau Tendre, Good Girl Gone Bad, Imagination, Sultan, Devil’s Intrigue. Доставка по Ташкенту — Яндекс Доставка, в регионы — BTS.',
    'Jelai R is a perfumed cosmetics brand from Tashkent with the motto “Inspired by Perfume”. The “30 in 1” perfumed hair cream spray with silk proteins protects hair from dryer and iron heat, softens it and keeps its scent for up to 12 hours; it contains no alcohol. Also body mists and the “Cotton” home perfume. Scents: Lost Cherry, Baccarat Rouge 540, Kirke, Black Opium, Chance Eau Tendre, Good Girl Gone Bad, Imagination, Sultan, Devil’s Intrigue. Yandex Delivery within Tashkent and BTS to the regions.'),
+# ---------- Savollar (FAQ) ----------
+'Savollar': ('Вопросы', 'FAQ'),
+'Ko‘p so‘raladigan savollar': ('Частые вопросы', 'Frequently asked questions'),
+'Jelai R qanday yoziladi?': ('Как правильно пишется Jelai R?', 'How do you spell Jelai R?'),
+'Brendimiz nomi — Jelai R (JelaiR). Uni ba’zan Jelair, Jelai, Jelay, Желай yoki Джелай deb ham yozishadi — barchasi bitta brend: Toshkentdagi Jelai R parfyumlangan kosmetikasi. Rasmiy sayt — jelair.uz.':
+  ('Наш бренд называется Jelai R (JelaiR). Его также пишут как Jelair, Jelai, Jelay, Желай или Джелай — это один и тот же бренд: парфюмированная косметика Jelai R из Ташкента. Официальный сайт — jelair.uz.',
+   'Our brand is Jelai R (JelaiR). People also write it as Jelair, Jelai, Jelay, Желай or Джелай — it is all the same brand: Jelai R perfumed cosmetics from Tashkent. The official website is jelair.uz.'),
+'Asl Jelai R mahsulotini qanday ajrataman?': ('Как отличить оригинальную продукцию Jelai R?', 'How can I tell genuine Jelai R products?'),
+'Asl mahsulot yorlig‘ida «Jelai R — Inspired by Perfume» logotipi bor: «i» harfidan keyin ostiga chiziq tortilgan R. Jelai R’ni faqat rasmiy sahifalar — jelair.uz, Instagram @jelair.brand va Telegram @jelaiuzz orqali xarid qiling.':
+  ('На этикетке оригинала есть логотип «Jelai R — Inspired by Perfume»: после буквы «i» стоит подчёркнутая буква R. Покупайте Jelai R только на официальных страницах — jelair.uz, в Instagram @jelair.brand и Telegram @jelaiuzz.',
+   'Genuine products carry the “Jelai R — Inspired by Perfume” logo on the label: an underlined R after the letter “i”. Buy Jelai R only through the official pages — jelair.uz, Instagram @jelair.brand and Telegram @jelaiuzz.'),
+'«30 in 1» soch spreyi nima qiladi?': ('Что делает спрей для волос «30 в 1»?', 'What does the “30 in 1” hair spray do?'),
+'Sochni fen, dazmol va ployka issig‘idan, quyosh nurlari va changdan himoya qiladi, yumshatadi, jilva beradi, tarashni osonlashtiradi va statik elektrni oladi. Tarkibida ipak oqsillari bor, ifor 12 soatgacha saqlanadi.':
+  ('Защищает волосы от жара фена, утюжка и плойки, от солнца и пыли, смягчает, придаёт блеск, облегчает расчёсывание и снимает статическое напряжение. В составе протеины шёлка, аромат держится до 12 часов.',
+   'It protects hair from dryer, iron and curler heat, sun and dust, softens it, adds shine, makes combing easier and removes static. It contains silk proteins, and the scent lasts up to 12 hours.'),
+'Soch spreyi tarkibida spirt bormi?': ('Есть ли в спрее для волос спирт?', 'Does the hair spray contain alcohol?'),
+'Yo‘q. «30 in 1» soch spreyi tarkibida spirt yo‘q, shuning uchun namoz o‘qiydigan ayollar uchun ham qulay.':
+  ('Нет. В составе спрея «30 в 1» нет спирта, поэтому он подходит и женщинам, совершающим намаз.', 'No. The “30 in 1” hair spray contains no alcohol, so it also suits women who pray.'),
+'Qanday buyurtma beraman?': ('Как сделать заказ?', 'How do I order?'),
+'Telegram’da @Jelai_uz adminiga yoki Instagram’da @jelair.brand sahifasiga yozing, yoki +998 77 302 99 99 raqamiga qo‘ng‘iroq qiling. Har kuni 09:00–21:00.':
+  ('Напишите администратору в Telegram @Jelai_uz или в Instagram @jelair.brand, либо позвоните по номеру +998 77 302 99 99. Ежедневно 09:00–21:00.', 'Message our admin on Telegram @Jelai_uz or on Instagram @jelair.brand, or call +998 77 302 99 99. Every day 09:00–21:00.'),
+'Yetkazib berish bormi?': ('Есть ли доставка?', 'Do you deliver?'),
+'Ha. Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali — butun O‘zbekiston bo‘ylab yetkazib beramiz.':
+  ('Да. По Ташкенту — Яндекс Доставка, в регионы — BTS: доставляем по всему Узбекистану.', 'Yes. Yandex Delivery within Tashkent and BTS to the regions — we deliver across Uzbekistan.'),
 # ---------- Dillerlar ----------
 'Rasmiy hamkorlarimiz': ('Наши официальные партнёры', 'Our official partners'),
 'Jelai mahsulotlarini faqat rasmiy dillerlar va brendning o‘z sahifalaridan xarid qiling.':
