@@ -241,7 +241,7 @@
       ? 'Barmog‘ingizni suring · kirish uchun teging'
       : 'Kursorni yurgizing · kirish uchun bosing';
 
-    const MIN = 2700, MAX = 6500, EXIT = 1100;
+    const MIN = 4800, MAX = 8500, EXIT = 1700;
     const t0 = performance.now();
     const ptr = { x: -1e4, y: -1e4 };
     let W = 0, H = 0, dpr = 1, parts = [], cx = 0, cy = 0, logoW = 0;
@@ -282,12 +282,12 @@
       const next = T.map((t, i) => {
         const p = parts[i] || (() => {
           const ang = Math.atan2(cy - ny, cx - nx) + (Math.random() - .5) * .55;
-          const sp = 9 + Math.random() * 20;
+          const sp = 6 + Math.random() * 13;
           return { x: nx, y: ny + (Math.random() - .5) * 18, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
                    a: .6 + Math.random() * .4, r: Math.random() < .14 ? 2.3 : 1.5, ph: Math.random() * 6.28 };
         })();
         p.tx = t[0]; p.ty = t[1];
-        p.delay = 120 + t[2] * 620 + Math.random() * 260;   // harflar chapdan o‘ngga yig‘iladi
+        p.delay = 300 + t[2] * 1300 + Math.random() * 500;   // harflar chapdan o‘ngga yig‘iladi
         return p;
       });
       parts = next;
@@ -298,14 +298,14 @@
       leaving = performance.now();
       parts.forEach(p => {
         const dx = p.x - cx, dy = p.y - cy, m = Math.hypot(dx, dy) || 1;
-        const f = 3 + Math.random() * 9;
+        const f = 2 + Math.random() * 6;
         p.vx += dx / m * f + (Math.random() - .3) * 4;
         p.vy += dy / m * f - 2 - Math.random() * 5;
       });
       loader.classList.add('out');
       root.classList.remove('loading');
       scrollTo(0, 0);
-      setTimeout(start, 260);
+      setTimeout(start, 500);
       try { sessionStorage.setItem('jelai-seen', '1'); } catch (e) { /* ixtiyoriy */ }
     };
 
@@ -333,12 +333,12 @@
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i];
         if (leaving) {
-          p.vx *= Math.pow(.965, f); p.vy = p.vy * Math.pow(.965, f) - .06 * f;
+          p.vx *= Math.pow(.965, f); p.vy = p.vy * Math.pow(.97, f) - .04 * f;
         } else {
-          const k = Math.max(0, Math.min(1, (el - p.delay) / 650));
+          const k = Math.max(0, Math.min(1, (el - p.delay) / 1100));
           if (k > 0) {
             const tx = p.tx + Math.sin(el * .0016 + p.ph) * .7, ty = p.ty + Math.cos(el * .0013 + p.ph) * .7;
-            p.vx += (tx - p.x) * .05 * k * f; p.vy += (ty - p.y) * .05 * k * f;
+            p.vx += (tx - p.x) * .035 * k * f; p.vy += (ty - p.y) * .035 * k * f;
           }
           const drag = Math.pow(.975 - .17 * k, f);
           p.vx *= drag; p.vy *= drag;
@@ -362,7 +362,7 @@
     loader.addEventListener('touchmove', move, { passive: true });
     loader.addEventListener('pointerleave', () => { ptr.x = ptr.y = -1e4; });
     loader.addEventListener('touchend', () => { ptr.x = ptr.y = -1e4; });
-    loader.addEventListener('pointerdown', e => { move(e); if (performance.now() - t0 > 900) leave(); });
+    loader.addEventListener('pointerdown', e => { move(e); if (performance.now() - t0 > 1500) leave(); });
     addEventListener('keydown', e => { if (!leaving && ['Enter', ' ', 'Escape'].includes(e.key)) leave(); });
     let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (!leaving) fit(); }, 120); });
 
