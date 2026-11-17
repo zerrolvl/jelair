@@ -186,5 +186,4 @@
   }
 
   $('#year').textContent = new Date().getFullYear();
-  document.querySelectorAll('[data-todo]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
 })();
