@@ -228,36 +228,151 @@
   }), { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  /* ---------- Kirish ekrani ---------- */
+  /* ---------- Kirish ekrani: atir tumani logotipga yig‘iladi ---------- */
   const loader = $('#loader');
   const start = () => document.body.classList.add('ready');
 
-  if (root.classList.contains('loading')) {
-    const MIN = 2000;                       // animatsiya to‘liq o‘ynashi uchun
+  const intro = () => {
+    const cv = loader.querySelector('canvas');
+    const ctx = cv.getContext('2d');
+    const pctEl = loader.querySelector('.loader-pct');
+    const coarse = matchMedia('(pointer: coarse)').matches;
+    loader.querySelector('.loader-hint').textContent = coarse
+      ? 'Barmog‘ingizni suring · kirish uchun teging'
+      : 'Kursorni yurgizing · kirish uchun bosing';
+
+    const MIN = 2700, MAX = 6500, EXIT = 1100;
     const t0 = performance.now();
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      setTimeout(() => {
-        const d = loader.querySelector('.lg-ap').getBoundingClientRect();   // ekran shu tomchiga yig‘iladi
-        loader.style.setProperty('--cx', `${d.left + d.width / 2}px`);
-        loader.style.setProperty('--cy', `${d.top + d.height / 2}px`);
-        loader.classList.add('out');
-        root.classList.remove('loading');
-        scrollTo(0, 0);
-        setTimeout(start, 350);
-        loader.addEventListener('animationend', e => { if (e.target === loader) loader.remove(); });
-        try { sessionStorage.setItem('jelai-seen', '1'); } catch (e) { /* ixtiyoriy */ }
-      }, Math.max(0, MIN - (performance.now() - t0)));
+    const ptr = { x: -1e4, y: -1e4 };
+    let W = 0, H = 0, dpr = 1, parts = [], cx = 0, cy = 0, logoW = 0;
+    let loaded = false, leaving = 0, last = t0, pct = -1;
+
+    const fit = () => {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Logotip shaklini yashirin kanvasga chizib, nuqtalarini olamiz
+      logoW = Math.min(W * (W < 600 ? .8 : .62), 580);
+      const s = logoW / 710, lh = 318 * s;
+      const ox = (W - logoW) / 2, oy = (H - lh) / 2 - H * .03;
+      cx = W / 2; cy = oy + lh / 2;
+      const oc = document.createElement('canvas');
+      oc.width = Math.ceil(logoW); oc.height = Math.ceil(lh);
+      const o = oc.getContext('2d');
+      o.scale(s, s); o.translate(-20, -18);
+      document.querySelectorAll('#logo path').forEach(p => o.fill(new Path2D(p.getAttribute('d')), 'evenodd'));
+      const d = o.getImageData(0, 0, oc.width, oc.height).data;
+      let ink = 0;
+      for (let i = 3; i < d.length; i += 4) if (d[i] > 128) ink++;
+      const want = coarse || W < 600 ? 1500 : 2600;
+      const step = Math.max(1.6, Math.sqrt(ink / want));
+      const T = [];
+      for (let y = 0; y < oc.height; y += step)
+        for (let x = 0; x < oc.width; x += step) {
+          const jx = x + (Math.random() - .5) * step * .8, jy = y + (Math.random() - .5) * step * .8;
+          const ix = Math.min(oc.width - 1, Math.max(0, jx | 0)), iy = Math.min(oc.height - 1, Math.max(0, jy | 0));
+          if (d[(iy * oc.width + ix) * 4 + 3] > 128) T.push([ox + jx, oy + jy, jx / logoW]);
+        }
+      T.sort(() => Math.random() - .5);
+
+      // Zarrachalar: purkagich chap pastdan, tuman o‘ngga uchadi
+      const nx = -30, ny = H * .78;
+      const next = T.map((t, i) => {
+        const p = parts[i] || (() => {
+          const ang = Math.atan2(cy - ny, cx - nx) + (Math.random() - .5) * .55;
+          const sp = 9 + Math.random() * 20;
+          return { x: nx, y: ny + (Math.random() - .5) * 18, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp,
+                   a: .6 + Math.random() * .4, r: Math.random() < .14 ? 2.3 : 1.5, ph: Math.random() * 6.28 };
+        })();
+        p.tx = t[0]; p.ty = t[1];
+        p.delay = 120 + t[2] * 620 + Math.random() * 260;   // harflar chapdan o‘ngga yig‘iladi
+        return p;
+      });
+      parts = next;
     };
-    const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-    fonts.then(finish);
-    setTimeout(finish, 3500);               // sekin tarmoqda ham ochiladi
-  } else {
-    loader.remove();
-    requestAnimationFrame(start);
-  }
+
+    const leave = () => {
+      if (leaving) return;
+      leaving = performance.now();
+      parts.forEach(p => {
+        const dx = p.x - cx, dy = p.y - cy, m = Math.hypot(dx, dy) || 1;
+        const f = 3 + Math.random() * 9;
+        p.vx += dx / m * f + (Math.random() - .3) * 4;
+        p.vy += dy / m * f - 2 - Math.random() * 5;
+      });
+      loader.classList.add('out');
+      root.classList.remove('loading');
+      scrollTo(0, 0);
+      setTimeout(start, 260);
+      try { sessionStorage.setItem('jelai-seen', '1'); } catch (e) { /* ixtiyoriy */ }
+    };
+
+    const frame = now => {
+      const f = Math.min(3, (now - last) / 16.67); last = now;
+      const el = now - t0;
+      ctx.clearRect(0, 0, W, H);
+
+      let ex = 0;
+      if (leaving) {
+        ex = Math.min(1, (now - leaving) / EXIT);
+        const e = 1 - Math.pow(1 - ex, 3);
+        loader.style.backgroundColor = `rgba(10,10,10,${1 - e})`;
+        const g = Math.round(245 - 235 * e);                // tuman oq sahifada qoramtir iz bo‘lib tarqaladi
+        ctx.fillStyle = `rgb(${g},${g},${g - 2})`;
+        if (ex >= 1) { loader.remove(); return; }
+      } else {
+        ctx.fillStyle = '#f5f5f3';
+        const shown = Math.min(loaded ? 100 : 99, Math.floor(el / MIN * 100));
+        if (shown !== pct) { pct = shown; pctEl.textContent = String(pct).padStart(2, '0'); }
+        if ((loaded && el >= MIN) || el >= MAX) leave();
+      }
+
+      const R = coarse ? 74 : 96, R2 = R * R;
+      for (let i = 0; i < parts.length; i++) {
+        const p = parts[i];
+        if (leaving) {
+          p.vx *= Math.pow(.965, f); p.vy = p.vy * Math.pow(.965, f) - .06 * f;
+        } else {
+          const k = Math.max(0, Math.min(1, (el - p.delay) / 650));
+          if (k > 0) {
+            const tx = p.tx + Math.sin(el * .0016 + p.ph) * .7, ty = p.ty + Math.cos(el * .0013 + p.ph) * .7;
+            p.vx += (tx - p.x) * .05 * k * f; p.vy += (ty - p.y) * .05 * k * f;
+          }
+          const drag = Math.pow(.975 - .17 * k, f);
+          p.vx *= drag; p.vy *= drag;
+          const dx = p.x - ptr.x, dy = p.y - ptr.y, d2 = dx * dx + dy * dy;
+          if (d2 < R2) {
+            const d = Math.sqrt(d2) || 1, push = (1 - d / R) * 7 * f;
+            p.vx += dx / d * push; p.vy += dy / d * push;
+          }
+        }
+        p.x += p.vx * f; p.y += p.vy * f;
+        const tw = .78 + .22 * Math.sin(el * .004 + p.ph * 3);
+        ctx.globalAlpha = p.a * tw * (1 - ex);
+        ctx.fillRect(p.x - p.r / 2, p.y - p.r / 2, p.r, p.r);
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(frame);
+    };
+
+    const move = e => { const t = e.touches ? e.touches[0] : e; if (t) { ptr.x = t.clientX; ptr.y = t.clientY; } };
+    loader.addEventListener('pointermove', move);
+    loader.addEventListener('touchmove', move, { passive: true });
+    loader.addEventListener('pointerleave', () => { ptr.x = ptr.y = -1e4; });
+    loader.addEventListener('touchend', () => { ptr.x = ptr.y = -1e4; });
+    loader.addEventListener('pointerdown', e => { move(e); if (performance.now() - t0 > 900) leave(); });
+    addEventListener('keydown', e => { if (!leaving && ['Enter', ' ', 'Escape'].includes(e.key)) leave(); });
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (!leaving) fit(); }, 120); });
+
+    fit();
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { loaded = true; });
+    requestAnimationFrame(frame);
+  };
+
+  if (root.classList.contains('loading') && loader.querySelector('canvas').getContext) intro();
+  else { root.classList.remove('loading'); loader.remove(); requestAnimationFrame(start); }
 
   $('#year').textContent = new Date().getFullYear();
 })();
