@@ -310,6 +310,93 @@
     setTimeout(() => root.classList.remove('theme-anim'), 500);
   });
 
+  /* ---------- Atir kursori: nuqta + halqa, bosilganda atir purkaladi ---------- */
+  (() => {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    const fine = matchMedia('(pointer: fine)').matches;
+    const fx = document.createElement('canvas');
+    fx.className = 'cur-fx'; fx.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(fx);
+    const ctx = fx.getContext('2d');
+    let W = 0, H = 0, dpr = 1, parts = [], rings = [], raf = 0, last = 0;
+    const size = () => {
+      dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
+      fx.width = Math.round(W * dpr); fx.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    size(); addEventListener('resize', size);
+
+    let dot, ring, mx = -100, my = -100, rx = -100, ry = -100, hover = false, down = false, shown = false;
+    if (fine) {
+      dot = document.createElement('div'); dot.className = 'cur-dot';
+      ring = document.createElement('div'); ring.className = 'cur-ring';
+      document.body.append(ring, dot);
+      root.classList.add('has-cursor');
+    }
+
+    const spray = (x, y) => {
+      // atomayzer: yuqoriga ochiladigan nozik tuman konusi + mayda tomchilar
+      for (let i = 0; i < 70; i++) {
+        const a = -Math.PI / 2 + (Math.random() - .5) * 1.9, s = .8 + Math.random() * 4.2;
+        parts.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: 40 + Math.random() * 50, age: 0, r: .6 + Math.random() * 1.8 });
+      }
+      rings.push({ x, y, age: 0 });
+      start();
+    };
+    const frame = now => {
+      const f = Math.min(3, (now - last) / 16.67 || 1); last = now;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#ffffff';
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i]; p.age += f;
+        if (p.age > p.life) { parts.splice(i, 1); continue; }
+        p.vx *= Math.pow(.94, f); p.vy = p.vy * Math.pow(.94, f) - .03 * f;
+        p.x += p.vx * f; p.y += p.vy * f;
+        const k = p.age / p.life;
+        ctx.globalAlpha = (1 - k) * .9;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1 + k * 1.6), 0, 6.283); ctx.fill();
+      }
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1;
+      for (let i = rings.length - 1; i >= 0; i--) {
+        const r = rings[i]; r.age += f;
+        const k = r.age / 34;
+        if (k >= 1) { rings.splice(i, 1); continue; }
+        ctx.globalAlpha = (1 - k) * .7;
+        ctx.beginPath(); ctx.arc(r.x, r.y, 6 + k * 46, 0, 6.283); ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      if (ring) {
+        rx += (mx - rx) * Math.min(1, .2 * f); ry += (my - ry) * Math.min(1, .2 * f);
+        ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%) scale(${down ? .7 : hover ? 1.9 : 1})`;
+        dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%) scale(${hover ? 0 : 1})`;
+      }
+      const moving = ring && (Math.abs(mx - rx) > .3 || Math.abs(my - ry) > .3);
+      raf = parts.length || rings.length || moving ? requestAnimationFrame(frame) : 0;
+    };
+    const start = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+
+    const HOVER = 'a, button, summary, label, select, .card, .ifor, .rev-img, [role="button"]';
+    addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      mx = e.clientX; my = e.clientY;
+      if (!shown && ring) { shown = true; rx = mx; ry = my; root.classList.add('cur-on'); }
+      hover = !!(e.target.closest && e.target.closest(HOVER));
+      start();
+    }, { passive: true });
+    document.addEventListener('pointerleave', () => { shown = false; root.classList.remove('cur-on'); });
+    addEventListener('pointerdown', e => {
+      down = true;
+      if (!e.target.closest || !e.target.closest('#ftPlay')) spray(e.clientX, e.clientY);
+      start();
+    }, { passive: true });
+    addEventListener('pointerup', () => { down = false; start(); }, { passive: true });
+
+    // footer o‘yin maydonida o‘z kursori bor; ochiq oynada esa oddiy kursor
+    const ft = $('#ftPlay');
+    if (ft) { ft.addEventListener('pointerenter', () => root.classList.add('cur-hide')); ft.addEventListener('pointerleave', () => root.classList.remove('cur-hide')); }
+    new MutationObserver(() => root.classList.toggle('cur-modal', sheet.open)).observe(sheet, { attributes: true, attributeFilter: ['open'] });
+  })();
+
   /* ---------- Navigatsiya ---------- */
   const nav = $('#nav');
   const toggle = $('#navToggle');

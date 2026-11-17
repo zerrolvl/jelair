@@ -771,3 +771,15 @@ a.cc:hover .cc-go { transform: translateX(5px); }
 .faq-a { padding: 0 52px 24px 0; color: var(--muted); }
 .faq-item[open] .faq-a { animation: hint-in .5s var(--ease); }
 @media (max-width: 860px) { .faq-in { grid-template-columns: minmax(0, 1fr); } .faq-a { padding-right: 0; } }
+
+/* ---------- Atir kursori ---------- */
+.cur-fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9998; pointer-events: none; mix-blend-mode: difference; }
+.cur-dot, .cur-ring { position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none; border-radius: 50%; mix-blend-mode: difference; opacity: 0; transition: opacity .3s; will-change: transform; }
+.cur-dot { width: 7px; height: 7px; background: #fff; transition: opacity .3s, width .3s, height .3s; }
+.cur-ring { width: 38px; height: 38px; border: 1px solid #fff; transition: opacity .3s, transform .18s var(--ease), background .3s; }
+html.cur-on .cur-dot, html.cur-on .cur-ring { opacity: 1; }
+html.has-cursor.cur-on, html.has-cursor.cur-on * { cursor: none !important; }
+html.cur-hide .cur-dot, html.cur-hide .cur-ring, html.cur-modal .cur-dot, html.cur-modal .cur-ring { opacity: 0 !important; }
+html.has-cursor.cur-modal, html.has-cursor.cur-modal * { cursor: auto !important; }
+html.has-cursor.cur-modal a, html.has-cursor.cur-modal button { cursor: pointer !important; }
+html.has-cursor.cur-hide #ftPlay, html.has-cursor.cur-hide #ftPlay * { cursor: none !important; }
