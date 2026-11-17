@@ -362,7 +362,9 @@
     outText.value = text;
     copyText(text).then(ok => { if (!ok) { outText.focus(); outText.select(); } });
     const a = document.createElement('a');
-    a.href = 'https://t.me/Jelai_uz'; a.target = '_blank'; a.rel = 'noopener';
+    const tgUrl = 'https://t.me/Jelai_uz?text=' + encodeURIComponent(text);   // chat matn bilan ochiladi
+    $('#tgSend').href = tgUrl;
+    a.href = tgUrl; a.target = '_blank'; a.rel = 'noopener';
     document.body.appendChild(a); a.click(); a.remove();
     $('#orderDone').hidden = false;
     $('#orderDone').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
