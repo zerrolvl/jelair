@@ -706,3 +706,45 @@ a.cc:hover .cc-go { transform: translateX(5px); }
 .bottle { color: #2a2420; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bottle { color: #b9aea3; } }
 :root[data-theme="dark"] .bottle { color: #b9aea3; }
+
+/* ---------- Haqiqiy suratlar ---------- */
+.hero-art img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 999px 999px 28px 28px; box-shadow: 0 40px 80px -40px var(--shadow); animation: float 7s ease-in-out infinite; }
+.hero-art::after { display: none; }
+.card-art { padding: 0; aspect-ratio: 4 / 5; overflow: hidden; display: block; background: var(--mist); }
+.card-art img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+.card:hover .card-art img { transform: scale(1.04); }
+@media (hover: none) { .card:hover .card-art img { transform: none; } }
+.card-body { padding-top: clamp(16px, 2vw, 24px); }
+.sheet-art { padding: 0; overflow: hidden; }
+.sheet-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (max-width: 720px) { .sheet-art { aspect-ratio: 4 / 3; } .sheet-art img { object-position: center 35%; } }
+.pts { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.pts li { position: relative; padding-left: 18px; }
+.pts li::before { content: ""; position: absolute; left: 2px; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); opacity: .5; }
+
+/* ---------- Iforlar galereyasi ---------- */
+.ifor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: clamp(20px, 2.4vw, 32px) clamp(14px, 1.6vw, 22px); }
+.ifor { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.ifor-img { border-radius: 20px; overflow: hidden; aspect-ratio: 3 / 4; background: var(--mist); margin-bottom: 8px; }
+.ifor-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.1s var(--ease); }
+.ifor:hover .ifor-img img { transform: scale(1.04); }
+.ifor-name { display: flex; align-items: center; gap: 10px; font: 400 clamp(1.3rem, 1.9vw, 1.6rem)/1.15 var(--display); }
+.ifor-name i { width: 10px; height: 10px; border-radius: 50%; background: var(--t); flex: none; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12); }
+.ifor-notes { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); }
+.ifor-about { color: var(--muted); font-size: .95rem; }
+@media (max-width: 560px) { .ifor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ifor-about { display: none; } .ifor-notes { letter-spacing: .08em; font-size: .68rem; } .ifor-img { border-radius: 14px; } }
+.hero-art { width: min(100%, 400px, 56svh); }
+@media (max-width: 760px) { .hero-art { width: min(62vw, 250px, 34svh); } }
+.ifor-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) { .ifor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.pts li::first-letter { text-transform: uppercase; }
+.sheet-art { position: relative; min-height: 100%; }
+.sheet-art img { position: absolute; inset: 0; }
+@media (max-width: 720px) { .sheet-art { min-height: 0; height: min(68vw, 300px); aspect-ratio: auto; } }
+@media (max-width: 620px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .card { flex-direction: row; }
+  .card-art { width: 40%; flex: none; aspect-ratio: 4 / 5; }
+  .card-body { padding: 16px 18px; align-content: center; }
+  .card-line { display: block; }
+}

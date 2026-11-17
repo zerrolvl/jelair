@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const PAGES = ['index.html', 'ru/index.html', 'en/index.html'].filter(p => fs.existsSync(path.join(ROOT, p)));
-const IDS = ['heroArt', 'grid', 'scentList', 'revTrack'];
+const IDS = ['grid', 'scentList', 'revTrack'];
 (async () => {
   const b = await chromium.launch();
   for (const page of PAGES) {

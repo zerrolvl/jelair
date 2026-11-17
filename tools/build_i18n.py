@@ -28,6 +28,7 @@ for lang, (i, locale) in LANGS.items():
     h = h.replace('<html lang="uz" data-base="">', f'<html lang="{lang}" data-base="../">')
     for a in ASSETS:
         h = h.replace(f'"{a}"', f'"../{a}"')
+    h = h.replace('src="img/', 'src="../img/')
     h = h.replace('<script src="../script.js" defer></script>', '<script src="../i18n.js" defer></script>\n<script src="../script.js" defer></script>')
     if lang == 'ru':  # Bodoni Moda’da kirill yo‘q — kirill harflari uchun Playfair Display yuklanadi
         h = h.replace('family=Jost:wght@300..500&display=swap', 'family=Jost:wght@300..500&family=Playfair+Display:ital,wght@0,400..600;1,400..500&display=swap')
