@@ -385,6 +385,98 @@
     });
   });
 
+  /* ---------- Footer: interaktiv «atir purkash» ----------
+     Kursor iz qoldiradi, bosish — ifor rangida tuman otiladi va ifor nomi suzib chiqadi. */
+  (() => {
+    const box = $('#ftPlay');
+    if (!box) return;
+    const cv = box.querySelector('canvas'), ctx = cv.getContext('2d');
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let W = 0, H = 0, dpr = 1, parts = [], labels = [], live = false, raf = 0, last = 0, next = 0, idle = 0, lastPtr = null;
+    const rgb = hex => [1, 3, 5].map(k => parseInt(hex.slice(k, k + 2), 16));
+    const lighten = ([r, g, b], k) => [r + (255 - r) * k, g + (255 - g) * k, b + (255 - b) * k].map(Math.round);
+    const fit = () => {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      W = box.clientWidth; H = box.clientHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    const add = (x, y, vx, vy, col, life, r) => {
+      if (parts.length > 1400) parts.shift();
+      parts.push({ x, y, vx, vy, col, life, age: 0, r });
+    };
+    const spray = (x, y) => {
+      const [name, notes, hex] = SCENTS[next++ % SCENTS.length];
+      const base = lighten(rgb(hex), .25);
+      for (let i = 0; i < 160; i++) {
+        const a = -Math.PI / 2 + (Math.random() - .5) * 1.5, s = 1.5 + Math.random() * 6.5;
+        const col = Math.random() < .25 ? [245, 245, 243] : lighten(base, Math.random() * .35);
+        add(x, y, Math.cos(a) * s, Math.sin(a) * s, col, 70 + Math.random() * 90, .8 + Math.random() * 2.4);
+      }
+      const narrow = W < 600;
+      if (narrow) labels.length = 0;                       // tor ekranda bir vaqtda bitta nom, o‘rtada
+      labels.push({ name, notes, x: narrow ? W / 2 : Math.min(Math.max(x, 170), W - 170), y: Math.max(y - 40, 70), age: 0 });
+      if (labels.length > 2) labels.shift();
+      box.classList.add('used');
+      start();
+    };
+    const frame = now => {
+      const f = Math.min(3, (now - last) / 16.67 || 1); last = now;
+      ctx.clearRect(0, 0, W, H);
+      // tinch holatda ham pastdan sekin tuman ko‘tariladi
+      idle += f;
+      if (idle > 5) { idle = 0; add(Math.random() * W, H + 4, (Math.random() - .5) * .3, -.35 - Math.random() * .6, [245, 245, 243], 260 + Math.random() * 200, .6 + Math.random() * 1.4); }
+      ctx.globalCompositeOperation = 'lighter';
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.age += f;
+        if (p.age > p.life) { parts.splice(i, 1); continue; }
+        p.vx *= Math.pow(.965, f); p.vy = p.vy * Math.pow(.965, f) - .025 * f;
+        p.vx += Math.sin((p.y + now * .05) * .02) * .02 * f;
+        p.x += p.vx * f; p.y += p.vy * f;
+        const k = p.age / p.life, a = (k < .1 ? k / .1 : 1 - (k - .1) / .9) * .75;
+        ctx.fillStyle = `rgba(${p.col[0]},${p.col[1]},${p.col[2]},${a})`;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1 + k * .8), 0, 6.283); ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.textAlign = 'center';
+      for (let i = labels.length - 1; i >= 0; i--) {
+        const l = labels[i];
+        l.age += f;
+        const k = l.age / 170;
+        if (k >= 1) { labels.splice(i, 1); continue; }
+        const a = k < .15 ? k / .15 : k > .7 ? 1 - (k - .7) / .3 : 1, y = l.y - k * 46;
+        ctx.globalAlpha = a;
+        ctx.fillStyle = '#f5f5f3';
+        ctx.font = `italic 400 ${W < 500 ? 26 : 36}px "Bodoni Moda", "Playfair Display", Georgia, serif`;
+        ctx.fillText(l.name, l.x, y);
+        ctx.fillStyle = '#9a9a95';
+        ctx.font = `300 ${W < 500 ? 12 : 14}px Jost, "Helvetica Neue", Arial, sans-serif`;
+        ctx.fillText(l.notes.length > 46 ? l.notes.slice(0, 44) + '…' : l.notes, l.x, y + (W < 500 ? 24 : 30));
+      }
+      ctx.globalAlpha = 1;
+      raf = live || parts.length || labels.length ? requestAnimationFrame(frame) : 0;
+    };
+    const start = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const pos = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    box.addEventListener('pointermove', e => {
+      if (still) return;
+      const [x, y] = pos(e);
+      if (lastPtr) {
+        const dx = x - lastPtr[0], dy = y - lastPtr[1], n = Math.min(6, Math.hypot(dx, dy) / 6);
+        for (let i = 0; i < n; i++) add(x - dx * i / n, y - dy * i / n, dx * .04 + (Math.random() - .5) * .8, dy * .04 - Math.random() * .9, [245, 245, 243], 50 + Math.random() * 60, .6 + Math.random() * 1.6);
+      }
+      lastPtr = [x, y];
+      start();
+    });
+    box.addEventListener('pointerleave', () => { lastPtr = null; });
+    box.addEventListener('pointerdown', e => { const [x, y] = pos(e); spray(x, y); });
+    new IntersectionObserver(es => es.forEach(en => { live = en.isIntersecting && !still; if (live) start(); })).observe(box);
+    addEventListener('resize', fit);
+    fit();
+  })();
+  document.querySelectorAll('.to-top').forEach(a => a.addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); }));
+
   /* ---------- Navigatsiya ---------- */
   const nav = $('#nav');
   const toggle = $('#navToggle');

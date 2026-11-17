@@ -605,10 +605,6 @@ html.locked { overflow: hidden; }
 .ft-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; padding-block: 24px; border-top: 1px solid rgba(255, 255, 255, .14); }
 .to-top { font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; color: var(--on-ink-muted); }
 .to-top:hover { color: var(--on-ink); }
-.ft-mark {
-  display: block; width: 100%; height: auto; margin: clamp(8px, 2vw, 24px) 0 calc(-1 * clamp(20px, 6vw, 90px));
-  fill: rgba(255, 255, 255, .06); pointer-events: none;
-}
 .footer .seo-about { margin-top: -12px; }
 @media (max-width: 960px) { .ft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ft-brand { grid-column: 1 / -1; } }
 @media (max-width: 480px) {
@@ -639,3 +635,20 @@ html.locked { overflow: hidden; }
   .nav-links .lang a { padding: 6px 7px; }
   .nav-logo svg { height: 32px; }
 }
+
+/* ---------- Footer: interaktiv «atir purkash» ---------- */
+.ft-play {
+  position: relative; height: clamp(220px, 30vw, 380px); margin-top: clamp(8px, 2vw, 24px);
+  cursor: crosshair; touch-action: pan-y; -webkit-user-select: none; user-select: none;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  background: radial-gradient(60% 90% at 50% 100%, rgba(255, 255, 255, .05), transparent 70%);
+}
+.ft-play canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.ft-play-hint {
+  position: absolute; left: 50%; bottom: calc(22px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  margin: 0; white-space: nowrap; pointer-events: none;
+  font: 400 .72rem/1 var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--on-ink-muted);
+  transition: opacity .6s;
+}
+.ft-play.used .ft-play-hint { opacity: .35; }
+@media (max-width: 420px) { .ft-play-hint { letter-spacing: .14em; font-size: .66rem; } }
