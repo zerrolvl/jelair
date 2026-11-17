@@ -120,6 +120,15 @@
   ------------------------------------------------------------------ */
   const DEALERS = [];
 
+  /* ---------- Til: <html lang> bo‘yicha (uz | ru | en). Tarjimalar i18n.js da ---------- */
+  const LANG = (document.documentElement.lang || 'uz').slice(0, 2);
+  const DICT = ((window.JELAI_I18N || {})[LANG]) || {};
+  const BASE = document.documentElement.dataset.base || '';
+  const t = (s, x) => { const v = DICT[s] ?? s; return x === undefined ? v : v.replace('{x}', x); };
+  PRODUCTS.forEach(p => ['name', 'tag', 'line', 'desc', 'points', 'size', 'scents'].forEach(k => { p[k] = t(p[k]); }));
+  SCENTS.forEach(s => { s[1] = t(s[1]); });
+  REVIEWS.forEach(rv => ['role', 'text', 'quote'].forEach(k => { if (rv[k]) rv[k] = t(rv[k]); }));
+
   const $ = (s, r = document) => r.querySelector(s);
   const root = document.documentElement;
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -174,7 +183,7 @@
     <span class="card-fam">${esc(p.tag)}</span>
     <span class="card-name">${esc(p.name)}</span>
     <span class="card-line">${esc(p.line)}</span>
-    <span class="card-more">Batafsil <span aria-hidden="true">→</span></span>
+    <span class="card-more">${t('Batafsil')} <span aria-hidden="true">→</span></span>
   </span>
 </button>`).join('');
 
@@ -193,22 +202,22 @@
   <h2 id="sheetName">${esc(p.name)}</h2>
   <p class="sheet-desc">${esc(p.desc)}</p>
   <dl class="sheet-notes">
-    <div><dt>Xususiyat</dt><dd>${esc(p.points)}</dd></div>
-    <div><dt>Hajm</dt><dd>${esc(p.size)}</dd></div>
-    <div><dt>Iforlar</dt><dd>${esc(p.scents)}</dd></div>
+    <div><dt>${t('Xususiyat')}</dt><dd>${esc(p.points)}</dd></div>
+    <div><dt>${t('Hajm')}</dt><dd>${esc(p.size)}</dd></div>
+    <div><dt>${t('Iforlar')}</dt><dd>${esc(p.scents)}</dd></div>
   </dl>
   <div class="sheet-buy">
-    <label class="field"><span>Ifor</span>
+    <label class="field"><span>${t('Ifor')}</span>
       <select id="sScent">${scentOptions(p).map(s => `<option>${esc(s)}</option>`).join('')}</select>
     </label>
-    <div class="qty" aria-label="Soni">
-      <button type="button" data-q="-1" aria-label="Kamaytirish">−</button>
+    <div class="qty" aria-label="${t('Soni')}">
+      <button type="button" data-q="-1" aria-label="${t('Kamaytirish')}">−</button>
       <output id="sQty">1</output>
-      <button type="button" data-q="1" aria-label="Ko‘paytirish">+</button>
+      <button type="button" data-q="1" aria-label="${t('Ko‘paytirish')}">+</button>
     </div>
-    <button class="btn" type="button" id="sAdd">Savatga qo‘shish</button>
+    <button class="btn" type="button" id="sAdd">${t('Savatga qo‘shish')}</button>
   </div>
-  <p class="sheet-small">Narx va mavjudlikni admin buyurtmani tasdiqlashda aytadi.</p>
+  <p class="sheet-small">${t('Narx va mavjudlikni admin buyurtmani tasdiqlashda aytadi.')}</p>
 </div>`;
     const qEl = $('#sQty');
     $('#sheetBody .qty').addEventListener('click', e => {
@@ -217,8 +226,8 @@
     });
     $('#sAdd').addEventListener('click', e => {
       addToCart(i, $('#sScent').value, +qEl.textContent);
-      e.currentTarget.textContent = 'Qo‘shildi ✓';
-      toast(`${p.name} savatga qo‘shildi`);
+      e.currentTarget.textContent = t('Qo‘shildi ✓');
+      toast(t('{x} savatga qo‘shildi', p.name));
       setTimeout(() => sheet.close(), 650);
     });
     sheet.showModal();
@@ -238,11 +247,11 @@
   const track = $('#revTrack');
   track.innerHTML = REVIEWS.map((r, k) => `
 <article class="rev reveal" style="--d:${(k % 4) * 0.07}s">
-  <a class="rev-img" href="https://t.me/jelaiuzz/${r.post}" target="_blank" rel="noopener" aria-label="${esc(r.name)} — videoni ko‘rish">
-    <img src="img/sharh/${r.img}.jpg" alt="${esc(r.name)}" width="600" height="800" loading="lazy" decoding="async">
-    <span class="rev-play"><i aria-hidden="true"></i>Video</span>
+  <a class="rev-img" href="https://t.me/jelaiuzz/${r.post}" target="_blank" rel="noopener" aria-label="${esc(r.name)} — ${t('videoni ko‘rish')}">
+    <img src="${BASE}img/sharh/${r.img}.jpg" alt="${esc(r.name)}" width="600" height="800" loading="lazy" decoding="async">
+    <span class="rev-play"><i aria-hidden="true"></i>${t('Video')}</span>
   </a>
-  ${r.quote ? `<p class="rev-text is-quote">«${esc(r.quote)}»</p>` : ''}
+  ${r.quote ? `<p class="rev-text is-quote">${t('«{x}»', esc(r.quote))}</p>` : ''}
   <p class="rev-text">${esc(r.text)}</p>
   <p class="rev-who"><strong>${esc(r.name)}</strong><span>${esc(r.role)}</span></p>
 </article>`).join('');
@@ -269,14 +278,14 @@
   <h3>${esc(d.name)}</h3>
   ${d.address ? `<p>${esc(d.address)}</p>` : ''}
   ${d.phone ? `<a href="tel:${esc(d.phone.replace(/[^+\d]/g, ''))}">${esc(d.phone)}</a>` : ''}
-  ${d.link ? `<a href="${esc(d.link)}" target="_blank" rel="noopener">Sahifasi →</a>` : ''}
+  ${d.link ? `<a href="${esc(d.link)}" target="_blank" rel="noopener">${t('Sahifasi →')}</a>` : ''}
 </article>`).join('');
   } else dl.hidden = true;
 
   /* ---------- Savat va onlayn buyurtma ---------- */
   function scentOptions(p) {
     const list = p.scents.includes(',') || /^[A-Z]/.test(p.scents) ? p.scents.split(/,\s*/) : [];
-    return [...list, 'Admin tavsiya qilsin'];
+    return [...list, t('Admin tavsiya qilsin')];
   }
   const CART_KEY = 'jelai-cart';
   let cart = [];
@@ -305,17 +314,17 @@
     const n = cart.reduce((s, c) => s + c.qty, 0);
     const badge = $('#cartBadge');
     badge.textContent = n; badge.hidden = !n;
-    $('#cartCount').textContent = `${n} ta mahsulot`;
+    $('#cartCount').textContent = t('{x} ta mahsulot', n);
     $('#cartEmpty').hidden = !!cart.length;
     $('#cartList').innerHTML = cart.map((c, k) => `
 <li class="cart-row">
   <div class="cart-info"><strong>${esc(PRODUCTS[c.i].name)}</strong><span>${esc(c.scent)}</span></div>
   <div class="qty qty-sm">
-    <button type="button" data-k="${k}" data-q="-1" aria-label="Kamaytirish">−</button>
+    <button type="button" data-k="${k}" data-q="-1" aria-label="${t('Kamaytirish')}">−</button>
     <output>${c.qty}</output>
-    <button type="button" data-k="${k}" data-q="1" aria-label="Ko‘paytirish">+</button>
+    <button type="button" data-k="${k}" data-q="1" aria-label="${t('Ko‘paytirish')}">+</button>
   </div>
-  <button type="button" class="cart-del" data-del="${k}" aria-label="O‘chirish">×</button>
+  <button type="button" class="cart-del" data-del="${k}" aria-label="${t('O‘chirish')}">×</button>
 </li>`).join('');
   }
   $('#cartList').addEventListener('click', e => {
@@ -340,24 +349,24 @@
     const name = $('#oName').value.trim(), phone = $('#oPhone').value.trim();
     const digits = phone.replace(/\D/g, '');
     let msg = '';
-    if (!cart.length) msg = 'Avval savatga kamida bitta mahsulot qo‘shing.';
-    else if (!name) msg = 'Ismingizni yozing.';
-    else if (digits.length < 9) msg = 'Telefon raqamingizni to‘liq yozing, masalan +998 90 123 45 67.';
+    if (!cart.length) msg = t('Avval savatga kamida bitta mahsulot qo‘shing.');
+    else if (!name) msg = t('Ismingizni yozing.');
+    else if (digits.length < 9) msg = t('Telefon raqamingizni to‘liq yozing, masalan +998 90 123 45 67.');
     err.textContent = msg;
     if (msg) { (!name && cart.length ? $('#oName') : digits.length < 9 && cart.length ? $('#oPhone') : null)?.focus(); return; }
 
     const city = $('#oCity').value, note = $('#oNote').value.trim();
-    const ship = city === 'Toshkent shahri' ? 'Yandex Delivery' : 'BTS';
+    const ship = $('#oCity').selectedIndex === 0 ? 'Yandex Delivery' : 'BTS';
     const text = [
-      'Assalomu alaykum! Jelai saytidan buyurtma:',
+      t('Assalomu alaykum! Jelai saytidan buyurtma:'),
       '',
       ...cart.map((c, k) => `${k + 1}) ${PRODUCTS[c.i].name} — ${c.scent} × ${c.qty}`),
       '',
-      `Ism: ${name}`,
-      `Telefon: ${phone}`,
-      `Viloyat: ${city}`,
-      `Yetkazish: ${ship}`,
-      note ? `Tavsif: ${note}` : ''
+      `${t('Ism')}: ${name}`,
+      `${t('Telefon')}: ${phone}`,
+      `${t('Viloyat')}: ${city}`,
+      `${t('Yetkazish')}: ${ship}`,
+      note ? `${t('Tavsif')}: ${note}` : ''
     ].filter((l, k, a) => l || a[k - 1]).join('\n').trim();
     outText.value = text;
     copyText(text).then(ok => { if (!ok) { outText.focus(); outText.select(); } });
@@ -371,8 +380,8 @@
   });
   $('#copyOrder').addEventListener('click', () => {
     copyText(outText.value).then(ok => {
-      if (ok) toast('Buyurtma matni nusxalandi');
-      else { outText.focus(); outText.select(); toast('Matnni belgilab, nusxalang'); }
+      if (ok) toast(t('Buyurtma matni nusxalandi'));
+      else { outText.focus(); outText.select(); toast(t('Matnni belgilab, nusxalang')); }
     });
   });
 
@@ -424,8 +433,8 @@
     const pctEl = loader.querySelector('.loader-pct');
     const coarse = matchMedia('(pointer: coarse)').matches;
     loader.querySelector('.loader-hint').textContent = coarse
-      ? 'Barmog‘ingizni suring · kirish uchun teging'
-      : 'Kursorni yurgizing · kirish uchun bosing';
+      ? t('Barmog‘ingizni suring · kirish uchun teging')
+      : t('Kursorni yurgizing · kirish uchun bosing');
 
     const MIN = 4800, MAX = 8500, EXIT = 1700;
     const t0 = performance.now();
