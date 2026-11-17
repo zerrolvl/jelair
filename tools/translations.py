@@ -310,7 +310,8 @@ T = {
   ('Jelai (Желай, Jelai R) — бренд парфюмированной косметики из Ташкента. Аромадиффузоры для дома, кремы для тела и рук, крем-баттер, спрей и маска для волос, жидкое мыло, соль для ванны и подарочные наборы в ароматах селективной парфюмерии: Lost Cherry, Baccarat Rouge 540, Devil’s Intrigue, Black Pepper, La Sultane. Доставка по Ташкенту — Яндекс Доставка, в регионы — BTS.',
    'Jelai (Jelai R) is a perfumed cosmetics brand from Tashkent. Reed diffusers, body and hand creams, body butter, hair spray, hair mask, liquid soap, bath salt and gift sets in niche perfume scents such as Lost Cherry, Baccarat Rouge 540, Devil’s Intrigue, Black Pepper and La Sultane. Yandex Delivery within Tashkent and BTS to the regions.'),
 'Jelai®. Barcha huquqlar himoyalangan.': ('Jelai®. Все права защищены.', 'Jelai®. All rights reserved.'),
-'Bosing yoki teging — iforni seping': ('Нажмите или коснитесь — распылите аромат', 'Click or tap to spray a scent'),
+'Kursorni yurgizing — zarrachalar qochadi · bosing — sochiladi': ('Поводите курсором — частицы убегают · нажмите — разлетятся', 'Move your cursor and the particles run · click to scatter them'),
+'Logotipga teging — zarrachalar sochilib ketadi': ('Коснитесь логотипа — частицы разлетятся', 'Tap the logo to scatter the particles'),
 'Yuqoriga': ('Наверх', 'Back to top'),
 # ---------- Kirish ekrani (JS) ----------
 'Barmog‘ingizni suring · kirish uchun teging': ('Проведите пальцем · коснитесь, чтобы войти', 'Swipe your finger · tap to enter'),

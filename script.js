@@ -385,94 +385,122 @@
     });
   });
 
-  /* ---------- Footer: interaktiv «atir purkash» ----------
-     Kursor iz qoldiradi, bosish — ifor rangida tuman otiladi va ifor nomi suzib chiqadi. */
+  /* ---------- Footer: zarrachalardan yig‘ilgan logotip ----------
+     Kompyuterda zarrachalar kursordan qochadi, bosilsa sochiladi; telefonda tegilsa sochilib, qaytib yig‘iladi. */
   (() => {
     const box = $('#ftPlay');
     if (!box) return;
     const cv = box.querySelector('canvas'), ctx = cv.getContext('2d');
+    const ring = box.querySelector('.ft-cursor');
+    const coarse = matchMedia('(pointer: coarse)').matches;
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let W = 0, H = 0, dpr = 1, parts = [], labels = [], live = false, raf = 0, last = 0, next = 0, idle = 0, lastPtr = null;
-    const rgb = hex => [1, 3, 5].map(k => parseInt(hex.slice(k, k + 2), 16));
-    const lighten = ([r, g, b], k) => [r + (255 - r) * k, g + (255 - g) * k, b + (255 - b) * k].map(Math.round);
+    box.querySelector('.ft-play-hint').textContent = coarse
+      ? t('Logotipga teging — zarrachalar sochilib ketadi')
+      : t('Kursorni yurgizing — zarrachalar qochadi · bosing — sochiladi');
+    let W = 0, H = 0, dpr = 1, parts = [], live = false, raf = 0, last = 0, born = 0, shown = false;
+    const ptr = { x: -1e4, y: -1e4, rx: -1e4, ry: -1e4, in: false, down: 0 };
+
     const fit = () => {
       dpr = Math.min(devicePixelRatio || 1, 2);
       W = box.clientWidth; H = box.clientHeight;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const lw = Math.min(W * (W < 600 ? .86 : .74), 980), s = lw / 710, lh = 318 * s;
+      const ox = (W - lw) / 2, oy = (H - lh) / 2 - H * .04;
+      const oc = document.createElement('canvas');
+      oc.width = Math.ceil(lw); oc.height = Math.ceil(lh);
+      const o = oc.getContext('2d');
+      o.scale(s, s); o.translate(-20, -18);
+      document.querySelectorAll('#logo path').forEach(p => o.fill(new Path2D(p.getAttribute('d')), 'evenodd'));
+      const d = o.getImageData(0, 0, oc.width, oc.height).data;
+      let ink = 0;
+      for (let i = 3; i < d.length; i += 4) if (d[i] > 128) ink++;
+      const step = Math.max(1.8, Math.sqrt(ink / (coarse || W < 600 ? 1500 : 3000)));
+      const T = [];
+      for (let y = 0; y < oc.height; y += step)
+        for (let x = 0; x < oc.width; x += step) {
+          const jx = x + (Math.random() - .5) * step * .8, jy = y + (Math.random() - .5) * step * .8;
+          const ix = Math.min(oc.width - 1, Math.max(0, jx | 0)), iy = Math.min(oc.height - 1, Math.max(0, jy | 0));
+          if (d[(iy * oc.width + ix) * 4 + 3] > 128) T.push([ox + jx, oy + jy]);
+        }
+      T.sort(() => Math.random() - .5);
+      parts = T.map(([tx, ty], i) => {
+        const p = parts[i] || { x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0, hold: 0,
+          a: .55 + Math.random() * .45, r: Math.random() < .14 ? 2.2 : 1.4, ph: Math.random() * 6.28 };
+        p.tx = tx; p.ty = ty;
+        return p;
+      });
     };
-    const add = (x, y, vx, vy, col, life, r) => {
-      if (parts.length > 1400) parts.shift();
-      parts.push({ x, y, vx, vy, col, life, age: 0, r });
+
+    const burst = (x, y, power) => {
+      const now = performance.now();
+      parts.forEach(p => {
+        const dx = p.x - x, dy = p.y - y, d = Math.hypot(dx, dy) || 1;
+        const f = power * Math.exp(-d / (W < 600 ? W * .5 : 260)) * (.6 + Math.random() * .8);
+        p.vx += dx / d * f + (Math.random() - .5) * 2;
+        p.vy += dy / d * f + (Math.random() - .5) * 2 - Math.random() * 2;
+        p.hold = now + 380 + Math.random() * 380;          // biroz uchib yuradi, keyin qaytadi
+      });
     };
-    const spray = (x, y) => {
-      const [name, notes, hex] = SCENTS[next++ % SCENTS.length];
-      const base = lighten(rgb(hex), .25);
-      for (let i = 0; i < 160; i++) {
-        const a = -Math.PI / 2 + (Math.random() - .5) * 1.5, s = 1.5 + Math.random() * 6.5;
-        const col = Math.random() < .25 ? [245, 245, 243] : lighten(base, Math.random() * .35);
-        add(x, y, Math.cos(a) * s, Math.sin(a) * s, col, 70 + Math.random() * 90, .8 + Math.random() * 2.4);
-      }
-      const narrow = W < 600;
-      if (narrow) labels.length = 0;                       // tor ekranda bir vaqtda bitta nom, o‘rtada
-      labels.push({ name, notes, x: narrow ? W / 2 : Math.min(Math.max(x, 170), W - 170), y: Math.max(y - 40, 70), age: 0 });
-      if (labels.length > 2) labels.shift();
-      box.classList.add('used');
-      start();
-    };
+
     const frame = now => {
       const f = Math.min(3, (now - last) / 16.67 || 1); last = now;
+      const el = now - born;
       ctx.clearRect(0, 0, W, H);
-      // tinch holatda ham pastdan sekin tuman ko‘tariladi
-      idle += f;
-      if (idle > 5) { idle = 0; add(Math.random() * W, H + 4, (Math.random() - .5) * .3, -.35 - Math.random() * .6, [245, 245, 243], 260 + Math.random() * 200, .6 + Math.random() * 1.4); }
-      ctx.globalCompositeOperation = 'lighter';
-      for (let i = parts.length - 1; i >= 0; i--) {
-        const p = parts[i];
-        p.age += f;
-        if (p.age > p.life) { parts.splice(i, 1); continue; }
-        p.vx *= Math.pow(.965, f); p.vy = p.vy * Math.pow(.965, f) - .025 * f;
-        p.vx += Math.sin((p.y + now * .05) * .02) * .02 * f;
+      const R = coarse ? 0 : 120, R2 = R * R;
+      ctx.fillStyle = '#f5f5f3';
+      for (const p of parts) {
+        const back = now > p.hold ? Math.min(1, (now - p.hold) / 900) : 0;
+        const k = (shown ? Math.min(1, el / 1400) : 0) * (p.hold ? back : 1);
+        if (k > 0) {
+          const tx = p.tx + Math.sin(now * .0015 + p.ph) * .8, ty = p.ty + Math.cos(now * .0012 + p.ph) * .8;
+          p.vx += (tx - p.x) * .04 * k * f; p.vy += (ty - p.y) * .04 * k * f;
+        }
+        const drag = Math.pow(now < p.hold ? .955 : .975 - .14 * k, f);
+        p.vx *= drag; p.vy *= drag;
+        if (R && ptr.in) {
+          const dx = p.x - ptr.x, dy = p.y - ptr.y, d2 = dx * dx + dy * dy;
+          if (d2 < R2) {
+            const d = Math.sqrt(d2) || 1, push = (1 - d / R) * (ptr.down ? 14 : 8) * f;
+            p.vx += dx / d * push; p.vy += dy / d * push;
+          }
+        }
         p.x += p.vx * f; p.y += p.vy * f;
-        const k = p.age / p.life, a = (k < .1 ? k / .1 : 1 - (k - .1) / .9) * .75;
-        ctx.fillStyle = `rgba(${p.col[0]},${p.col[1]},${p.col[2]},${a})`;
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * (1 + k * .8), 0, 6.283); ctx.fill();
-      }
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.textAlign = 'center';
-      for (let i = labels.length - 1; i >= 0; i--) {
-        const l = labels[i];
-        l.age += f;
-        const k = l.age / 170;
-        if (k >= 1) { labels.splice(i, 1); continue; }
-        const a = k < .15 ? k / .15 : k > .7 ? 1 - (k - .7) / .3 : 1, y = l.y - k * 46;
-        ctx.globalAlpha = a;
-        ctx.fillStyle = '#f5f5f3';
-        ctx.font = `italic 400 ${W < 500 ? 26 : 36}px "Bodoni Moda", "Playfair Display", Georgia, serif`;
-        ctx.fillText(l.name, l.x, y);
-        ctx.fillStyle = '#9a9a95';
-        ctx.font = `300 ${W < 500 ? 12 : 14}px Jost, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillText(l.notes.length > 46 ? l.notes.slice(0, 44) + '…' : l.notes, l.x, y + (W < 500 ? 24 : 30));
+        ctx.globalAlpha = p.a * (.75 + .25 * Math.sin(now * .004 + p.ph * 3));
+        ctx.fillRect(p.x - p.r / 2, p.y - p.r / 2, p.r, p.r);
       }
       ctx.globalAlpha = 1;
-      raf = live || parts.length || labels.length ? requestAnimationFrame(frame) : 0;
+      if (ring && ptr.in) {                                  // kursor halqasi biroz kechikib ergashadi
+        ptr.rx += (ptr.x - ptr.rx) * Math.min(1, .2 * f); ptr.ry += (ptr.y - ptr.ry) * Math.min(1, .2 * f);
+        ring.style.transform = `translate(${ptr.rx}px, ${ptr.ry}px) translate(-50%, -50%) scale(${ptr.down ? .55 : 1})`;
+      }
+      raf = live ? requestAnimationFrame(frame) : 0;
     };
-    const start = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+    const start = () => { if (!raf && live) { last = performance.now(); raf = requestAnimationFrame(frame); } };
+
     const pos = e => { const r = cv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
     box.addEventListener('pointermove', e => {
-      if (still) return;
-      const [x, y] = pos(e);
-      if (lastPtr) {
-        const dx = x - lastPtr[0], dy = y - lastPtr[1], n = Math.min(6, Math.hypot(dx, dy) / 6);
-        for (let i = 0; i < n; i++) add(x - dx * i / n, y - dy * i / n, dx * .04 + (Math.random() - .5) * .8, dy * .04 - Math.random() * .9, [245, 245, 243], 50 + Math.random() * 60, .6 + Math.random() * 1.6);
-      }
-      lastPtr = [x, y];
-      start();
+      [ptr.x, ptr.y] = pos(e);
+      if (!ptr.in) { ptr.rx = ptr.x; ptr.ry = ptr.y; }
+      ptr.in = e.pointerType === 'mouse' || e.pointerType === 'pen';
+      box.classList.toggle('hovering', ptr.in);
     });
-    box.addEventListener('pointerleave', () => { lastPtr = null; });
-    box.addEventListener('pointerdown', e => { const [x, y] = pos(e); spray(x, y); });
-    new IntersectionObserver(es => es.forEach(en => { live = en.isIntersecting && !still; if (live) start(); })).observe(box);
-    addEventListener('resize', fit);
+    box.addEventListener('pointerleave', () => { ptr.in = false; ptr.down = 0; box.classList.remove('hovering'); });
+    box.addEventListener('pointerdown', e => {
+      const [x, y] = pos(e);
+      ptr.down = 1;
+      burst(x, y, e.pointerType === 'mouse' ? 22 : W < 600 ? 9 : 16);
+      box.classList.add('used');
+    });
+    addEventListener('pointerup', () => { ptr.down = 0; });
+
+    if (still) { fit(); shown = true; born = -1e5; parts.forEach(p => { p.x = p.tx; p.y = p.ty; }); live = true; frame(performance.now()); live = false; return; }
+    new IntersectionObserver(es => es.forEach(en => {
+      live = en.isIntersecting;
+      if (live && !shown) { shown = true; born = performance.now(); }
+      start();
+    }), { threshold: .15 }).observe(box);
+    let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(fit, 150); });
     fit();
   })();
   document.querySelectorAll('.to-top').forEach(a => a.addEventListener('click', e => { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); }));

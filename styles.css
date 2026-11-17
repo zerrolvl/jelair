@@ -638,8 +638,8 @@ html.locked { overflow: hidden; }
 
 /* ---------- Footer: interaktiv «atir purkash» ---------- */
 .ft-play {
-  position: relative; height: clamp(220px, 30vw, 380px); margin-top: clamp(8px, 2vw, 24px);
-  cursor: crosshair; touch-action: pan-y; -webkit-user-select: none; user-select: none;
+  position: relative; height: clamp(260px, 34vw, 480px); overflow: hidden; margin-top: clamp(8px, 2vw, 24px);
+  cursor: default; touch-action: pan-y; -webkit-user-select: none; user-select: none;
   border-top: 1px solid rgba(255, 255, 255, .08);
   background: radial-gradient(60% 90% at 50% 100%, rgba(255, 255, 255, .05), transparent 70%);
 }
@@ -652,3 +652,13 @@ html.locked { overflow: hidden; }
 }
 .ft-play.used .ft-play-hint { opacity: .35; }
 @media (max-width: 420px) { .ft-play-hint { letter-spacing: .14em; font-size: .66rem; } }
+
+.ft-play.hovering { cursor: none; }
+.ft-cursor {
+  position: absolute; left: 0; top: 0; width: 64px; height: 64px; border-radius: 50%; pointer-events: none;
+  border: 1px solid rgba(245, 245, 243, .55);
+  background: radial-gradient(circle, rgba(245, 245, 243, .16), rgba(245, 245, 243, 0) 70%);
+  opacity: 0; transition: opacity .3s, width .3s, height .3s; will-change: transform;
+}
+.ft-cursor::after { content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; border-radius: 50%; background: #f5f5f3; }
+.ft-play.hovering .ft-cursor { opacity: 1; }
