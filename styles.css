@@ -54,38 +54,60 @@ h3 { font: 400 1.2rem/1.3 var(--body); letter-spacing: .01em; }
   color: var(--muted);
 }
 
-/* ---------- Kirish ekrani ---------- */
+/* ---------- Kirish ekrani ----------
+   Tomchi (logotipdagi belgi) tushadi, to‘lqin tarqaladi, harflar tomchidan
+   chapga qarab ochiladi. Chiqishda ekran yana tomchiga yig‘iladi. */
 #loader { display: none; }
 .loading #loader, #loader.out {
   position: fixed; inset: 0; z-index: 100;
-  display: grid; place-content: center; justify-items: center; gap: 34px;
+  display: grid; place-items: center;
   background: var(--ink);
 }
 .loader-logo { width: min(62vw, 340px); fill: var(--on-ink); overflow: visible; }
-.loader-logo .lg {
-  opacity: 0; transform: translateY(14px); filter: blur(10px);
-  animation: lg-in .9s var(--ease) forwards;
+.loader-logo .lg, .loader-logo .ring { transform-box: fill-box; transform-origin: 50% 50%; }
+
+.loader-logo .lg-ap {
+  transform-origin: 50% 100%; opacity: 0;
+  animation: drop 1.05s linear forwards;
 }
-.loader-logo .lg-j { animation-delay: .10s; }
-.loader-logo .lg-e { animation-delay: .19s; }
-.loader-logo .lg-l { animation-delay: .28s; }
-.loader-logo .lg-a { animation-delay: .37s; }
-.loader-logo .lg-i { animation-delay: .46s; }
-.loader-logo .lg-ap { animation-delay: .72s; transform: translateY(-22px); }
-.loader-logo .lg-r { animation-delay: .95s; transform: none; }
+@keyframes drop {
+  0%   { opacity: 0; transform: translateY(-620px) scale(.78, 1.55); animation-timing-function: cubic-bezier(.6, 0, .95, .5); }
+  10%  { opacity: 1; }
+  52%  { opacity: 1; transform: translateY(0) scale(.78, 1.55); animation-timing-function: ease-out; }
+  64%  { opacity: 1; transform: translateY(8px) scale(1.34, .62); animation-timing-function: ease-in-out; }
+  80%  { opacity: 1; transform: translateY(-5px) scale(.93, 1.1); animation-timing-function: ease-in-out; }
+  100% { opacity: 1; transform: none; }
+}
+
+.loader-logo .ring { fill: none; stroke: var(--on-ink); stroke-width: 2; vector-effect: non-scaling-stroke; opacity: 0; }
+.loader-logo .ring-1 { animation: ring 1s .55s cubic-bezier(.2, .7, .3, 1) forwards; }
+.loader-logo .ring-2 { animation: ring 1.1s .72s cubic-bezier(.2, .7, .3, 1) forwards; }
+.loader-logo .ring-3 { animation: ring 1.7s 2.1s cubic-bezier(.2, .7, .3, 1) infinite; }  /* sekin tarmoqda kutish */
+@keyframes ring {
+  0%   { opacity: .75; transform: scale(.3, .12); }
+  100% { opacity: 0; transform: scale(13, 5.2); }
+}
+
+.loader-logo .lg-j, .loader-logo .lg-e, .loader-logo .lg-l, .loader-logo .lg-a, .loader-logo .lg-i {
+  opacity: 0; transform: translateY(26px) scale(.96); filter: blur(12px);
+  animation: lg-in .75s var(--ease) forwards;
+}
+.loader-logo .lg-i { animation-delay: .62s; }
+.loader-logo .lg-a { animation-delay: .70s; }
+.loader-logo .lg-l { animation-delay: .78s; }
+.loader-logo .lg-e { animation-delay: .86s; }
+.loader-logo .lg-j { animation-delay: .94s; }
+.loader-logo .lg-r { opacity: 0; animation: lg-r .5s 1.3s var(--ease) forwards; }
 @keyframes lg-in { to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes lg-r { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
 
-.loader-bar { width: min(30vw, 150px); height: 1px; background: rgba(255, 255, 255, .16); overflow: hidden; }
-.loader-bar span {
-  display: block; height: 100%; background: var(--on-ink);
-  transform: scaleX(0); transform-origin: left;
-  animation: bar 1.5s .15s var(--ease-io) forwards;
+#loader.out { animation: condense .9s var(--ease-io) forwards; }
+#loader.out .lg:not(.lg-ap), #loader.out .ring { animation: none; opacity: 0; transform: none; filter: none; transition: opacity .3s; }
+#loader.out .lg-ap { animation: none; opacity: 1; }
+@keyframes condense {
+  from { clip-path: circle(150vmax at var(--cx, 50%) var(--cy, 50%)); }
+  to   { clip-path: circle(0 at var(--cx, 50%) var(--cy, 50%)); }
 }
-@keyframes bar { to { transform: scaleX(1); } }
-
-#loader.out { animation: curtain .95s var(--ease-io) forwards; }
-#loader.out .loader-logo, #loader.out .loader-bar { transition: opacity .35s, transform .6s var(--ease); opacity: 0; transform: scale(.96); }
-@keyframes curtain { to { transform: translateY(-100%); } }
 
 /* ---------- Navigatsiya ---------- */
 .nav {

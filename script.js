@@ -233,13 +233,16 @@
   const start = () => document.body.classList.add('ready');
 
   if (root.classList.contains('loading')) {
-    const MIN = 1900;                       // animatsiya to‘liq o‘ynashi uchun
+    const MIN = 2000;                       // animatsiya to‘liq o‘ynashi uchun
     const t0 = performance.now();
     let done = false;
     const finish = () => {
       if (done) return;
       done = true;
       setTimeout(() => {
+        const d = loader.querySelector('.lg-ap').getBoundingClientRect();   // ekran shu tomchiga yig‘iladi
+        loader.style.setProperty('--cx', `${d.left + d.width / 2}px`);
+        loader.style.setProperty('--cy', `${d.top + d.height / 2}px`);
         loader.classList.add('out');
         root.classList.remove('loading');
         scrollTo(0, 0);
