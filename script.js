@@ -60,7 +60,7 @@
       desc: 'Tabiiy tarkibli yumshoq sovun. Terini avaylab tozalaydi, keskin hidlarni ketkazadi va qo‘lda nafis ifor qoldiradi.',
       points: 'Har kuni foydalanish uchun · terini quritmaydi',
       size: 'Dozatorli flakon',
-      scents: 'Black Pepper va boshqalar'
+      scents: 'Black Pepper'
     },
     {
       name: 'Vanna tuzi', tag: 'Tana', art: 'jar', tint: '#f6f3ee',
@@ -97,6 +97,28 @@
     ['Bitter Peach', 'To‘yingan shaftoli notasi', '#f0a36b'],
     ['African Leather', 'Charm, kardamon, geran · pachuli, vetiver', '#7a4a2a']
   ];
+
+  /* ------------------------------------------------------------------
+     SHARHLAR — rasm img/sharh/ papkasida. quote bo‘lsa iqtibos sifatida
+     chiqadi; text — qisqa izoh. post — Telegram kanaldagi video raqami.
+  ------------------------------------------------------------------ */
+  const REVIEWS = [
+    { img: 'shahlo',   name: 'Shahlo Alijonova',  role: 'Bloger',            quote: 'Hidiga gap yo‘q', post: 1014 },
+    { img: 'ziyoda',   name: 'Ziyoda',            role: 'Xonanda',           text: 'Jelai parvarish to‘plamini videoda sinab ko‘rdi.', post: 446 },
+    { img: 'bonamur',  name: 'Bonamur',           role: 'Bloger',            text: 'Parfyumlangan soch spreylarini tanishtirdi.', post: 1487 },
+    { img: 'sherzod',  name: 'Sherzod Abdullaev', role: 'Kolorist-stilist',  text: 'Salonda mijoz sochini Jelai mahsulotlari bilan turmaklaydi.', post: 767 },
+    { img: 'parizoda', name: 'Parizoda Usmanova', role: 'Bloger',            text: 'Soch va tana parvarishi to‘plami haqida gapirib berdi.', post: 509 },
+    { img: 'durdona',  name: 'Durdona Kurbonova', role: 'Bloger',            text: 'Jelai sovg‘a to‘plamini ochib ko‘rsatdi.', post: 729 },
+    { img: 'zarina',   name: 'Zarina Yuldashova', role: 'Bloger',            text: 'Soch spreyini qanday ishlatishni ko‘rsatdi.', post: 691 },
+    { img: 'diana',    name: 'Diana Omarova',     role: 'Stilist-vizajist',  text: 'Parvarish mahsulotlarini videoda ko‘rib chiqdi.', post: 705 }
+  ];
+
+  /* ------------------------------------------------------------------
+     DILLERLAR — ro‘yxat bo‘sh bo‘lsa, bo‘lim faqat «Diller bo‘ling» va
+     ogohlantirishni ko‘rsatadi. Namuna:
+     { city: 'Samarqand', name: 'Do‘kon nomi', address: 'Ko‘cha, uy', phone: '+998 90 000 00 00', link: 'https://instagram.com/...' }
+  ------------------------------------------------------------------ */
+  const DEALERS = [];
 
   const $ = (s, r = document) => r.querySelector(s);
   const root = document.documentElement;
@@ -175,8 +197,30 @@
     <div><dt>Hajm</dt><dd>${esc(p.size)}</dd></div>
     <div><dt>Iforlar</dt><dd>${esc(p.scents)}</dd></div>
   </dl>
-  <p class="sheet-desc">Narx va mavjudligini <a href="https://www.instagram.com/jelair.brand/" target="_blank" rel="noopener">Instagram Direct</a> yoki <a href="https://t.me/JELAIDI" target="_blank" rel="noopener">Telegram</a> orqali so‘rang.</p>
+  <div class="sheet-buy">
+    <label class="field"><span>Ifor</span>
+      <select id="sScent">${scentOptions(p).map(s => `<option>${esc(s)}</option>`).join('')}</select>
+    </label>
+    <div class="qty" aria-label="Soni">
+      <button type="button" data-q="-1" aria-label="Kamaytirish">−</button>
+      <output id="sQty">1</output>
+      <button type="button" data-q="1" aria-label="Ko‘paytirish">+</button>
+    </div>
+    <button class="btn" type="button" id="sAdd">Savatga qo‘shish</button>
+  </div>
+  <p class="sheet-small">Narx va mavjudlikni admin buyurtmani tasdiqlashda aytadi.</p>
 </div>`;
+    const qEl = $('#sQty');
+    $('#sheetBody .qty').addEventListener('click', e => {
+      const b = e.target.closest('[data-q]');
+      if (b) qEl.value = qEl.textContent = Math.max(1, Math.min(20, +qEl.textContent + +b.dataset.q));
+    });
+    $('#sAdd').addEventListener('click', e => {
+      addToCart(i, $('#sScent').value, +qEl.textContent);
+      e.currentTarget.textContent = 'Qo‘shildi ✓';
+      toast(`${p.name} savatga qo‘shildi`);
+      setTimeout(() => sheet.close(), 650);
+    });
     sheet.showModal();
     root.classList.add('locked');
     $('#sheetBody').scrollTop = 0;
@@ -189,6 +233,145 @@
   $('#sheetClose').addEventListener('click', () => sheet.close());
   sheet.addEventListener('click', e => { if (e.target === sheet) sheet.close(); });
   sheet.addEventListener('close', () => root.classList.remove('locked'));
+
+  /* ---------- Sharhlar ---------- */
+  const track = $('#revTrack');
+  track.innerHTML = REVIEWS.map((r, k) => `
+<article class="rev reveal" style="--d:${(k % 4) * 0.07}s">
+  <a class="rev-img" href="https://t.me/jelaiuzz/${r.post}" target="_blank" rel="noopener" aria-label="${esc(r.name)} — videoni ko‘rish">
+    <img src="img/sharh/${r.img}.jpg" alt="${esc(r.name)}" width="600" height="800" loading="lazy" decoding="async">
+    <span class="rev-play"><i aria-hidden="true"></i>Video</span>
+  </a>
+  <p class="rev-text${r.quote ? ' is-quote' : ''}">${r.quote ? `«${esc(r.quote)}»` : esc(r.text)}</p>
+  <p class="rev-who"><strong>${esc(r.name)}</strong><span>${esc(r.role)}</span></p>
+</article>`).join('');
+  const revStep = dir => {
+    const c = track.querySelector('.rev');
+    track.scrollBy({ left: dir * (c ? c.getBoundingClientRect().width + 20 : 300), behavior: 'smooth' });
+  };
+  $('#revPrev').addEventListener('click', () => revStep(-1));
+  $('#revNext').addEventListener('click', () => revStep(1));
+  const revEdges = () => {
+    $('#revPrev').disabled = track.scrollLeft < 8;
+    $('#revNext').disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 8;
+  };
+  track.addEventListener('scroll', revEdges, { passive: true });
+  addEventListener('resize', revEdges);
+  revEdges();
+
+  /* ---------- Dillerlar ---------- */
+  const dl = $('#dealerList');
+  if (DEALERS.length) {
+    dl.innerHTML = DEALERS.map(d => `
+<article class="dealer reveal">
+  <p class="eyebrow">${esc(d.city)}</p>
+  <h3>${esc(d.name)}</h3>
+  ${d.address ? `<p>${esc(d.address)}</p>` : ''}
+  ${d.phone ? `<a href="tel:${esc(d.phone.replace(/[^+\d]/g, ''))}">${esc(d.phone)}</a>` : ''}
+  ${d.link ? `<a href="${esc(d.link)}" target="_blank" rel="noopener">Sahifasi →</a>` : ''}
+</article>`).join('');
+  } else dl.hidden = true;
+
+  /* ---------- Savat va onlayn buyurtma ---------- */
+  function scentOptions(p) {
+    const list = p.scents.includes(',') || /^[A-Z]/.test(p.scents) ? p.scents.split(/,\s*/) : [];
+    return [...list, 'Admin tavsiya qilsin'];
+  }
+  const CART_KEY = 'jelai-cart';
+  let cart = [];
+  try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch (e) { cart = []; }
+  cart = cart.filter(c => PRODUCTS[c.i] && c.qty > 0);
+
+  const toastEl = $('#toast');
+  let toastT;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => toastEl.classList.remove('show'), 2600);
+  }
+
+  function saveCart() {
+    try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) { /* ixtiyoriy */ }
+    renderCart();
+  }
+  function addToCart(i, scent, qty) {
+    const hit = cart.find(c => c.i === i && c.scent === scent);
+    if (hit) hit.qty = Math.min(20, hit.qty + qty); else cart.push({ i, scent, qty });
+    saveCart();
+  }
+  function renderCart() {
+    const n = cart.reduce((s, c) => s + c.qty, 0);
+    const badge = $('#cartBadge');
+    badge.textContent = n; badge.hidden = !n;
+    $('#cartCount').textContent = `${n} ta mahsulot`;
+    $('#cartEmpty').hidden = !!cart.length;
+    $('#cartList').innerHTML = cart.map((c, k) => `
+<li class="cart-row">
+  <div class="cart-info"><strong>${esc(PRODUCTS[c.i].name)}</strong><span>${esc(c.scent)}</span></div>
+  <div class="qty qty-sm">
+    <button type="button" data-k="${k}" data-q="-1" aria-label="Kamaytirish">−</button>
+    <output>${c.qty}</output>
+    <button type="button" data-k="${k}" data-q="1" aria-label="Ko‘paytirish">+</button>
+  </div>
+  <button type="button" class="cart-del" data-del="${k}" aria-label="O‘chirish">×</button>
+</li>`).join('');
+  }
+  $('#cartList').addEventListener('click', e => {
+    const q = e.target.closest('[data-q]'), d = e.target.closest('[data-del]');
+    if (q) {
+      const c = cart[+q.dataset.k];
+      c.qty += +q.dataset.q;
+      if (c.qty < 1) cart.splice(+q.dataset.k, 1);
+      saveCart();
+    } else if (d) { cart.splice(+d.dataset.del, 1); saveCart(); }
+  });
+  renderCart();
+
+  const form = $('#orderForm'), err = $('#orderErr'), outText = $('#orderText');
+  const copyText = text => {
+    try {
+      return navigator.clipboard.writeText(text).then(() => true, () => false);
+    } catch (e) { return Promise.resolve(false); }
+  };
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = $('#oName').value.trim(), phone = $('#oPhone').value.trim();
+    const digits = phone.replace(/\D/g, '');
+    let msg = '';
+    if (!cart.length) msg = 'Avval savatga kamida bitta mahsulot qo‘shing.';
+    else if (!name) msg = 'Ismingizni yozing.';
+    else if (digits.length < 9) msg = 'Telefon raqamingizni to‘liq yozing, masalan +998 90 123 45 67.';
+    err.textContent = msg;
+    if (msg) { (!name && cart.length ? $('#oName') : digits.length < 9 && cart.length ? $('#oPhone') : null)?.focus(); return; }
+
+    const city = $('#oCity').value, addr = $('#oAddr').value.trim(), note = $('#oNote').value.trim();
+    const ship = city === 'Toshkent shahri' ? 'Yandex Delivery' : city === 'Chet el' ? 'Xalqaro yetkazish' : 'BTS';
+    const text = [
+      'Assalomu alaykum! Jelai saytidan buyurtma:',
+      '',
+      ...cart.map((c, k) => `${k + 1}) ${PRODUCTS[c.i].name} — ${c.scent} × ${c.qty}`),
+      '',
+      `Ism: ${name}`,
+      `Telefon: ${phone}`,
+      `Hudud: ${city}${addr ? ', ' + addr : ''}`,
+      `Yetkazish: ${ship}`,
+      note ? `Izoh: ${note}` : ''
+    ].filter((l, k, a) => l || a[k - 1]).join('\n').trim();
+    outText.value = text;
+    copyText(text).then(ok => { if (!ok) { outText.focus(); outText.select(); } });
+    const a = document.createElement('a');
+    a.href = 'https://t.me/JELAIDI'; a.target = '_blank'; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    $('#orderDone').hidden = false;
+    $('#orderDone').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+  $('#copyOrder').addEventListener('click', () => {
+    copyText(outText.value).then(ok => {
+      if (ok) toast('Buyurtma matni nusxalandi');
+      else { outText.focus(); outText.select(); toast('Matnni belgilab, nusxalang'); }
+    });
+  });
 
   /* ---------- Navigatsiya ---------- */
   const nav = $('#nav');

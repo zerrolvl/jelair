@@ -67,10 +67,15 @@
     <nav class="nav-links" id="menu" aria-label="Asosiy">
       <a href="#mahsulotlar">Mahsulotlar</a>
       <a href="#iforlar">Iforlar</a>
-      <a href="#brend">Brend</a>
-      <a href="#qollanma">Qo‘llanma</a>
+      <a href="#sharhlar">Sharhlar</a>
+      <a href="#xarid">Xarid</a>
+      <a href="#dillerlar">Dillerlar</a>
       <a href="#aloqa">Aloqa</a>
     </nav>
+    <a class="nav-cart" href="#xarid" aria-label="Savat">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.1a1 1 0 0 1-1 .9H7.2a1 1 0 0 1-1-.9L5 8Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg>
+      <span class="nav-cart-n" id="cartBadge" hidden>0</span>
+    </a>
     <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="menu" aria-label="Menyu"><span></span><span></span></button>
   </div>
 </header>
@@ -119,6 +124,33 @@
     </div>
   </section>
 
+  <section class="reviews" id="sharhlar">
+    <div class="wrap">
+      <header class="sec-head rev-head reveal">
+        <div class="rev-head-text">
+          <p class="eyebrow">Sharhlar</p>
+          <h2>Jelai’ni tanlaganlar</h2>
+          <p class="sec-sub">Xonandalar, blogerlar va go‘zallik ustalari Jelai mahsulotlari haqida. Har bir videoni Telegram kanalimizda ko‘rishingiz mumkin.</p>
+        </div>
+        <div class="rev-arrows">
+          <button class="arrow" type="button" id="revPrev" aria-label="Oldingi sharh">←</button>
+          <button class="arrow" type="button" id="revNext" aria-label="Keyingi sharh">→</button>
+        </div>
+      </header>
+    </div>
+    <div class="rev-track" id="revTrack" tabindex="0" aria-label="Sharhlar ro‘yxati"></div>
+    <div class="wrap">
+      <figure class="client-quotes reveal">
+        <figcaption class="eyebrow">Mijozlar fikri · Vanna tuzi</figcaption>
+        <div class="cq-row">
+          <blockquote>«Ifori to‘yingan va juda yoqimli»</blockquote>
+          <blockquote>«Tuzdan keyin teri juda yumshoq bo‘ladi»</blockquote>
+          <blockquote>«Yaxshilab dam olmoqchi bo‘lsam, aynan shuni olaman»</blockquote>
+        </div>
+      </figure>
+    </div>
+  </section>
+
   <section class="philosophy" id="brend">
     <div class="wrap phil-in">
       <svg class="phil-drop" viewBox="0 0 54 76" aria-hidden="true"><use href="#drop"/></svg>
@@ -139,6 +171,95 @@
             <p>Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali. Chet elga ham jo‘natamiz.</p>
           </article>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shop" id="xarid">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <p class="eyebrow">Onlayn xarid</p>
+        <h2>Uydan chiqmasdan buyurtma bering</h2>
+        <p class="sec-sub">Mahsulotlarni savatga qo‘shing, ma’lumotlaringizni yozing — buyurtma Telegram orqali adminga boradi.</p>
+      </header>
+      <div class="shop-in">
+        <div class="shop-side">
+          <ol class="steps">
+            <li class="reveal"><h3>Tanlang</h3><p>Mahsulotni oching, iforini tanlang va «Savatga qo‘shish»ni bosing.</p></li>
+            <li class="reveal"><h3>Yuboring</h3><p>Ism va telefoningizni yozing. Buyurtma matni tayyorlanadi va Telegram’da adminga yuboriladi.</p></li>
+            <li class="reveal"><h3>Qabul qiling</h3><p>Toshkent bo‘ylab Yandex Delivery, viloyatlarga BTS orqali. Chet elga ham jo‘natamiz.</p></li>
+          </ol>
+          <div class="alt-buy reveal">
+            <p class="eyebrow">Yoki to‘g‘ridan-to‘g‘ri</p>
+            <a href="https://ig.me/m/jelair.brand" target="_blank" rel="noopener">Instagram Direct</a>
+            <a href="https://t.me/JELAIDI" target="_blank" rel="noopener">Telegram · admin</a>
+            <a href="tel:+998773029999">+998 77 302 99 99</a>
+          </div>
+        </div>
+
+        <form class="order reveal" id="orderForm" novalidate>
+          <div class="order-top">
+            <h3>Savat</h3>
+            <span class="order-count" id="cartCount">0 ta mahsulot</span>
+          </div>
+          <ul class="cart" id="cartList"></ul>
+          <p class="cart-empty" id="cartEmpty">Savat hozircha bo‘sh. <a href="#mahsulotlar">Mahsulotni tanlang</a> va «Savatga qo‘shish»ni bosing.</p>
+
+          <div class="fields">
+            <label class="field"><span>Ismingiz</span><input id="oName" name="name" autocomplete="name" required></label>
+            <label class="field"><span>Telefon</span><input id="oPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+998 __ ___ __ __" required></label>
+            <label class="field"><span>Hudud</span>
+              <select id="oCity" name="city">
+                <option>Toshkent shahri</option><option>Toshkent viloyati</option><option>Andijon</option><option>Buxoro</option>
+                <option>Farg‘ona</option><option>Jizzax</option><option>Xorazm</option><option>Namangan</option><option>Navoiy</option>
+                <option>Qashqadaryo</option><option>Qoraqalpog‘iston</option><option>Samarqand</option><option>Sirdaryo</option>
+                <option>Surxondaryo</option><option>Chet el</option>
+              </select>
+            </label>
+            <label class="field"><span>Manzil</span><input id="oAddr" name="address" autocomplete="street-address" placeholder="Ko‘cha, uy, mo‘ljal"></label>
+            <label class="field field-wide"><span>Izoh</span><textarea id="oNote" name="note" rows="2" placeholder="Masalan: sovg‘a uchun qadoqlang"></textarea></label>
+          </div>
+          <p class="order-err" id="orderErr" role="alert"></p>
+          <button class="btn btn-wide" type="submit">Buyurtmani yuborish <span aria-hidden="true">→</span></button>
+          <p class="order-note">Narx va yetkazib berish muddatini admin buyurtmani tasdiqlashda aytadi.</p>
+
+          <div class="order-done" id="orderDone" hidden>
+            <h3>Buyurtma matni tayyor</h3>
+            <p>Matn nusxalandi va Telegram ochildi. Adminga yuborish uchun chatga joylashtiring. Telegram ochilmagan bo‘lsa, quyidagi tugmalardan foydalaning.</p>
+            <textarea id="orderText" readonly rows="7" aria-label="Buyurtma matni"></textarea>
+            <div class="done-actions">
+              <a class="btn" href="https://t.me/JELAIDI" target="_blank" rel="noopener">Telegram’da yuborish</a>
+              <a class="btn btn-ghost" href="https://ig.me/m/jelair.brand" target="_blank" rel="noopener">Instagram Direct</a>
+              <button class="btn btn-ghost" type="button" id="copyOrder">Nusxalash</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="dealers" id="dillerlar">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <p class="eyebrow">Dillerlar</p>
+        <h2>Rasmiy hamkorlarimiz</h2>
+        <p class="sec-sub">Jelai mahsulotlarini faqat rasmiy dillerlar va brendning o‘z sahifalaridan xarid qiling.</p>
+      </header>
+      <div class="dealer-list" id="dealerList"></div>
+      <div class="dealer-cta">
+        <article class="dc-join reveal">
+          <h3>Diller bo‘ling</h3>
+          <p>Do‘koningiz, go‘zallik saloningiz yoki onlayn sahifangiz bormi? Hamkorlik shartlarini adminimizdan so‘rang.</p>
+          <div class="dc-actions">
+            <a class="btn btn-light" href="https://t.me/JELAIDI" target="_blank" rel="noopener">Telegram’da yozish</a>
+            <a class="dc-phone" href="tel:+998770029090">+998 77 002 90 90</a>
+          </div>
+        </article>
+        <article class="dc-warn reveal">
+          <p class="eyebrow">Diqqat</p>
+          <h3>Soxta mahsulotdan ehtiyot bo‘ling</h3>
+          <p>Uzum’dagi ba’zi do‘konlarda Jelai nomi bilan soxta mahsulot sotilgan. Asl mahsulotni rasmiy dillerlar, Instagram <a href="https://www.instagram.com/jelair.brand/" target="_blank" rel="noopener">@jelair.brand</a> yoki Telegram <a href="https://t.me/jelaiuzz" target="_blank" rel="noopener">@jelaiuzz</a> orqali oling.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -210,6 +331,8 @@
     <p class="copy">© <span id="year">2026</span> Jelai®. Barcha huquqlar himoyalangan.</p>
   </div>
 </footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <dialog class="sheet" id="sheet" aria-labelledby="sheetName">
   <button class="sheet-close" id="sheetClose" aria-label="Yopish"><span></span><span></span></button>
