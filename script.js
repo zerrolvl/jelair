@@ -386,7 +386,6 @@
     document.addEventListener('pointerleave', () => { shown = false; root.classList.remove('cur-on'); });
     addEventListener('pointerdown', e => {
       down = true;
-      if (!e.target.closest || !e.target.closest('#ftPlay')) spray(e.clientX, e.clientY);
       start();
     }, { passive: true });
     addEventListener('pointerup', () => { down = false; start(); }, { passive: true });
