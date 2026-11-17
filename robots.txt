@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zerrolvl.github.io/jelair/sitemap.xml
+Sitemap: https://jelair.uz/sitemap.xml

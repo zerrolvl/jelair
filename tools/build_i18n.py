@@ -6,7 +6,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 from translations import T
 
-U = 'https://zerrolvl.github.io/jelair/'
+U = 'https://jelair.uz/'
 LANGS = {'ru': (0, 'ru_RU'), 'en': (1, 'en_US')}
 
 # 1) i18n.js — skript uchun lug‘at
