@@ -178,6 +178,7 @@
   <p class="sheet-desc">Narx va mavjudligini <a href="https://www.instagram.com/jelair.brand/" target="_blank" rel="noopener">Instagram Direct</a> yoki <a href="https://t.me/JELAIDI" target="_blank" rel="noopener">Telegram</a> orqali so‘rang.</p>
 </div>`;
     sheet.showModal();
+    root.classList.add('locked');
     $('#sheetBody').scrollTop = 0;
   };
 
@@ -187,6 +188,7 @@
   });
   $('#sheetClose').addEventListener('click', () => sheet.close());
   sheet.addEventListener('click', e => { if (e.target === sheet) sheet.close(); });
+  sheet.addEventListener('close', () => root.classList.remove('locked'));
 
   /* ---------- Navigatsiya ---------- */
   const nav = $('#nav');
@@ -194,11 +196,12 @@
   const setMenu = open => {
     nav.classList.toggle('open', open);
     toggle.setAttribute('aria-expanded', open);
-    root.style.overflow = open ? 'hidden' : '';
+    root.classList.toggle('locked', open);
   };
   toggle.addEventListener('click', () => setMenu(!nav.classList.contains('open')));
   $('#menu').addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
   addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  matchMedia('(min-width: 761px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 
   /* ---------- Bayon: so‘zlar skroll bilan yonadi ---------- */
   const st = $('#statement');
